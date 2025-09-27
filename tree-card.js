@@ -100,26 +100,15 @@ class TreeCard extends HTMLElement {
     }
   }
 
-  createTree(data, level, visited = new WeakSet()) {
-    // Prevent infinite recursion
-    if (level > 20) {
-      return '<div class="error">Maximum depth exceeded</div>';
-    }
-    
+  createTree(data, level) {
     let html = '';
     const indent = '  '.repeat(level);
     
     if (Array.isArray(data)) {
       data.forEach((item, index) => {
-        html += this.createTree(item, level, visited);
+        html += this.createTree(item, level);
       });
     } else if (typeof data === 'object' && data !== null) {
-      // Check for circular references
-      if (visited.has(data)) {
-        return '<div class="error">Circular reference detected</div>';
-      }
-      visited.add(data);
-      
       // Check if this object has a Name property
       if (data.Name) {
         const hasChildren = data.Items && data.Items.length > 0;
@@ -137,7 +126,7 @@ class TreeCard extends HTMLElement {
             </div>
             ${hasChildren ? `
               <div class="tree-children" id="${itemId}" style="display: none;">
-                ${this.createTree(data.Items, level + 1, visited)}
+                ${this.createTree(data.Items, level + 1)}
               </div>
             ` : ''}
           </div>
@@ -147,11 +136,9 @@ class TreeCard extends HTMLElement {
       // Process other properties that might contain nested objects
       Object.keys(data).forEach(key => {
         if (key !== 'Name' && key !== 'Items' && typeof data[key] === 'object') {
-          html += this.createTree(data[key], level, visited);
+          html += this.createTree(data[key], level);
         }
       });
-      
-      visited.delete(data);
     }
     
     return html;
