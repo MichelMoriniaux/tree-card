@@ -7,6 +7,7 @@ class TreeCard extends HTMLElement {
       interval: 0, // Refresh interval in seconds (0 = no auto-refresh)
       ...config
     };
+    this.expandedItems = new Set(); // Track expanded items
     this.render();
     this.startInterval(); // Restart interval with new config
   }
@@ -127,33 +128,38 @@ class TreeCard extends HTMLElement {
     }
   }
 
-  createTree(data, level) {
+  createTree(data, level, path = '') {
     let html = '';
     const indent = '  '.repeat(level);
     
     if (Array.isArray(data)) {
       data.forEach((item, index) => {
-        html += this.createTree(item, level);
+        const itemPath = path ? `${path}[${index}]` : `[${index}]`;
+        html += this.createTree(item, level, itemPath);
       });
     } else if (typeof data === 'object' && data !== null) {
       // Check if this object has a Name property
       if (data.Name) {
         const hasChildren = data.Items && data.Items.length > 0;
-        const itemId = `item-${level}-${Math.random().toString(36).substr(2, 9)}`;
+        const itemPath = path ? `${path}.${data.Name}` : data.Name;
+        const itemId = `item-${itemPath.replace(/[^a-zA-Z0-9]/g, '_')}`;
+        
+        // Check if this item should be expanded
+        const isExpanded = this.expandedItems.has(itemPath);
         
         html += `
           <div class="tree-item" style="margin-left: ${level * 20}px;">
-            <div class="tree-node" data-item-id="${itemId}">
+            <div class="tree-node" data-item-id="${itemId}" data-path="${itemPath}">
               ${hasChildren ? 
-                `<span class="tree-toggle" data-target="${itemId}">▶</span>` : 
+                `<span class="tree-toggle" data-target="${itemId}">${isExpanded ? '▼' : '▶'}</span>` : 
                 '<span class="tree-spacer"></span>'
               }
               <span class="tree-name">${data.Name}</span>
               ${data.Status ? `<span class="tree-status status-${data.Status.toLowerCase()}">${data.Status}</span>` : ''}
             </div>
             ${hasChildren ? `
-              <div class="tree-children" id="${itemId}" style="display: none;">
-                ${this.createTree(data.Items, level + 1)}
+              <div class="tree-children" id="${itemId}" style="display: ${isExpanded ? 'block' : 'none'};">
+                ${this.createTree(data.Items, level + 1, itemPath)}
               </div>
             ` : ''}
           </div>
@@ -163,7 +169,8 @@ class TreeCard extends HTMLElement {
       // Process other properties that might contain nested objects
       Object.keys(data).forEach(key => {
         if (key !== 'Name' && key !== 'Items' && typeof data[key] === 'object') {
-          html += this.createTree(data[key], level);
+          const itemPath = path ? `${path}.${key}` : key;
+          html += this.createTree(data[key], level, itemPath);
         }
       });
     }
@@ -178,13 +185,17 @@ class TreeCard extends HTMLElement {
         e.stopPropagation();
         const targetId = toggle.getAttribute('data-target');
         const target = this.querySelector(`#${targetId}`);
+        const treeNode = toggle.closest('.tree-node');
+        const itemPath = treeNode.getAttribute('data-path');
         
         if (target.style.display === 'none') {
           target.style.display = 'block';
           toggle.textContent = '▼';
+          this.expandedItems.add(itemPath);
         } else {
           target.style.display = 'none';
           toggle.textContent = '▶';
+          this.expandedItems.delete(itemPath);
         }
       });
     });
