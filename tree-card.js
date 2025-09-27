@@ -174,6 +174,7 @@ class TreeCard extends HTMLElement {
       min_rows: 3,
       max_rows: 6,
     };
+  }
 }
 
 customElements.define('tree-card', TreeCard);
