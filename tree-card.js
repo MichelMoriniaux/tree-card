@@ -24,7 +24,7 @@ class TreeCard extends HTMLElement {
   }
 
   async render() {
-    if (!this.config || !this.hass) return;
+    if (!this.config || !hass) return;
 
     // Validate configuration
     if (!this.config.url) {
@@ -166,6 +166,14 @@ class TreeCard extends HTMLElement {
   getCardSize() {
     return 3;
   }
+
+  getGridOptions() {
+    return {
+      rows: 3,
+      columns: 1,
+      min_rows: 3,
+      max_rows: 6,
+    };
 }
 
 customElements.define('tree-card', TreeCard);
