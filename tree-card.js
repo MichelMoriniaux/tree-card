@@ -21,9 +21,9 @@ class TreeCard extends HTMLElement {
 
     let jsonData;
     try {
-      jsonData = JSON.parse(entity.state);
+      jsonData = JSON.parse(entity.attributes.Response);
     } catch (e) {
-      this.innerHTML = `<div class="error">Invalid JSON in entity ${this.config.entity}</div>`;
+      this.innerHTML = `<div class="error">Invalid JSON in entity ${this.config.entity} Response attribute</div>`;
       return;
     }
 
