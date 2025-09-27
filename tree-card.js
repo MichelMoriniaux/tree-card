@@ -11,7 +11,7 @@ class TreeCard extends HTMLElement {
   }
 
   set hass(hass) {
-    this.hass = hass;
+    //this.hass = hass;
     this.render();
   }
 
