@@ -9,172 +9,202 @@ class TreeCard extends HTMLElement {
       const style = document.createElement('style');
       style.id = 'tree-card-styles';
       style.textContent = `
-        /* Tree Card Styles */
-        .tree-container {
-          font-family: 'Roboto', sans-serif;
-          line-height: 1.4;
+        /* Tree Card Styles - Home Assistant Specific */
+        tree-card .tree-container,
+        ha-card .tree-container {
+          font-family: 'Roboto', sans-serif !important;
+          line-height: 1.4 !important;
         }
 
-        .tree-item {
-          margin: 2px 0;
-          border-left: 1px solid #e0e0e0;
-          padding-left: 8px;
+        tree-card .tree-item,
+        ha-card .tree-item {
+          margin: 2px 0 !important;
+          border-left: 1px solid #e0e0e0 !important;
+          padding-left: 8px !important;
         }
 
-        .tree-node {
-          display: flex;
-          align-items: center;
-          padding: 4px 0;
-          cursor: pointer;
-          border-radius: 4px;
-          transition: background-color 0.2s ease;
+        tree-card .tree-node,
+        ha-card .tree-node {
+          display: flex !important;
+          align-items: center !important;
+          padding: 4px 0 !important;
+          cursor: pointer !important;
+          border-radius: 4px !important;
+          transition: background-color 0.2s ease !important;
         }
 
-        .tree-node:hover {
-          background-color: rgba(0, 0, 0, 0.05);
+        tree-card .tree-node:hover,
+        ha-card .tree-node:hover {
+          background-color: rgba(0, 0, 0, 0.05) !important;
         }
 
-        .tree-toggle {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          text-align: center;
-          font-size: 12px;
-          color: #666;
-          cursor: pointer;
-          user-select: none;
-          margin-right: 8px;
-          transition: transform 0.2s ease;
+        tree-card .tree-toggle,
+        ha-card .tree-toggle {
+          display: inline-block !important;
+          width: 16px !important;
+          height: 16px !important;
+          text-align: center !important;
+          font-size: 12px !important;
+          color: #666 !important;
+          cursor: pointer !important;
+          user-select: none !important;
+          margin-right: 8px !important;
+          transition: transform 0.2s ease !important;
         }
 
-        .tree-toggle:hover {
-          color: #1976d2;
-          transform: scale(1.1);
+        tree-card .tree-toggle:hover,
+        ha-card .tree-toggle:hover {
+          color: #1976d2 !important;
+          transform: scale(1.1) !important;
         }
 
-        .tree-spacer {
-          display: inline-block;
-          width: 16px;
-          margin-right: 8px;
+        tree-card .tree-spacer,
+        ha-card .tree-spacer {
+          display: inline-block !important;
+          width: 16px !important;
+          margin-right: 8px !important;
         }
 
-        .tree-name {
-          flex: 1;
-          font-weight: 500;
-          color: #333;
-          font-size: 14px;
+        tree-card .tree-name,
+        ha-card .tree-name {
+          flex: 1 !important;
+          font-weight: 500 !important;
+          color: #333 !important;
+          font-size: 14px !important;
         }
 
-        .tree-status {
-          display: inline-block;
-          padding: 2px 8px;
-          border-radius: 12px;
-          font-size: 11px;
-          font-weight: 500;
-          text-transform: uppercase;
-          margin-left: 8px;
+        tree-card .tree-status,
+        ha-card .tree-status {
+          display: inline-block !important;
+          padding: 2px 8px !important;
+          border-radius: 12px !important;
+          font-size: 11px !important;
+          font-weight: 500 !important;
+          text-transform: uppercase !important;
+          margin-left: 8px !important;
         }
 
-        .status-created {
-          background-color: #e8f5e8;
-          color: #2e7d32;
+        tree-card .status-created,
+        ha-card .status-created {
+          background-color: #e8f5e8 !important;
+          color: #2e7d32 !important;
         }
 
-        .status-disabled {
-          background-color: #fff3e0;
-          color: #f57c00;
+        tree-card .status-disabled,
+        ha-card .status-disabled {
+          background-color: #fff3e0 !important;
+          color: #f57c00 !important;
         }
 
-        .status-running {
-          background-color: #e3f2fd;
-          color: #1976d2;
+        tree-card .status-running,
+        ha-card .status-running {
+          background-color: #e3f2fd !important;
+          color: #1976d2 !important;
         }
 
-        .status-completed {
-          background-color: #e8f5e8;
-          color: #388e3c;
+        tree-card .status-completed,
+        ha-card .status-completed {
+          background-color: #e8f5e8 !important;
+          color: #388e3c !important;
         }
 
-        .status-failed {
-          background-color: #ffebee;
-          color: #d32f2f;
+        tree-card .status-failed,
+        ha-card .status-failed {
+          background-color: #ffebee !important;
+          color: #d32f2f !important;
         }
 
-        .tree-children {
-          margin-left: 16px;
-          border-left: 1px solid #e0e0e0;
-          padding-left: 8px;
+        tree-card .tree-children,
+        ha-card .tree-children {
+          margin-left: 16px !important;
+          border-left: 1px solid #e0e0e0 !important;
+          padding-left: 8px !important;
         }
 
         /* Dark theme support */
         @media (prefers-color-scheme: dark) {
-          .tree-item {
-            border-left-color: #424242;
+          tree-card .tree-item,
+          ha-card .tree-item {
+            border-left-color: #424242 !important;
           }
           
-          .tree-node:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+          tree-card .tree-node:hover,
+          ha-card .tree-node:hover {
+            background-color: rgba(255, 255, 255, 0.05) !important;
           }
           
-          .tree-toggle {
-            color: #aaa;
+          tree-card .tree-toggle,
+          ha-card .tree-toggle {
+            color: #aaa !important;
           }
           
-          .tree-toggle:hover {
-            color: #64b5f6;
+          tree-card .tree-toggle:hover,
+          ha-card .tree-toggle:hover {
+            color: #64b5f6 !important;
           }
           
-          .tree-name {
-            color: #e0e0e0;
+          tree-card .tree-name,
+          ha-card .tree-name {
+            color: #e0e0e0 !important;
           }
           
-          .tree-children {
-            border-left-color: #424242;
+          tree-card .tree-children,
+          ha-card .tree-children {
+            border-left-color: #424242 !important;
           }
           
-          .status-created {
-            background-color: #1b5e20;
-            color: #a5d6a7;
+          tree-card .status-created,
+          ha-card .status-created {
+            background-color: #1b5e20 !important;
+            color: #a5d6a7 !important;
           }
           
-          .status-disabled {
-            background-color: #e65100;
-            color: #ffcc02;
+          tree-card .status-disabled,
+          ha-card .status-disabled {
+            background-color: #e65100 !important;
+            color: #ffcc02 !important;
           }
           
-          .status-running {
-            background-color: #0d47a1;
-            color: #90caf9;
+          tree-card .status-running,
+          ha-card .status-running {
+            background-color: #0d47a1 !important;
+            color: #90caf9 !important;
           }
           
-          .status-completed {
-            background-color: #1b5e20;
-            color: #a5d6a7;
+          tree-card .status-completed,
+          ha-card .status-completed {
+            background-color: #1b5e20 !important;
+            color: #a5d6a7 !important;
           }
           
-          .status-failed {
-            background-color: #b71c1c;
-            color: #ef9a9a;
+          tree-card .status-failed,
+          ha-card .status-failed {
+            background-color: #b71c1c !important;
+            color: #ef9a9a !important;
           }
         }
 
         /* Responsive design */
         @media (max-width: 768px) {
-          .tree-item {
+          tree-card .tree-item,
+          ha-card .tree-item {
             margin-left: 10px !important;
           }
           
-          .tree-children {
-            margin-left: 8px;
+          tree-card .tree-children,
+          ha-card .tree-children {
+            margin-left: 8px !important;
           }
           
-          .tree-name {
-            font-size: 13px;
+          tree-card .tree-name,
+          ha-card .tree-name {
+            font-size: 13px !important;
           }
           
-          .tree-status {
-            font-size: 10px;
-            padding: 1px 6px;
+          tree-card .tree-status,
+          ha-card .tree-status {
+            font-size: 10px !important;
+            padding: 1px 6px !important;
           }
         }
       `;
