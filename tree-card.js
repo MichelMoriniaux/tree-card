@@ -171,9 +171,11 @@ class TreeCard extends HTMLElement {
 customElements.define('tree-card', TreeCard);
 
 // Register the card with Home Assistant
+/*
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: 'tree-card',
   name: 'Tree Card',
   description: 'Display JSON data as an indented tree structure',
 });
+*/
