@@ -1,0 +1,1413 @@
+{
+    "Response": [
+        {
+            "GlobalTriggers": []
+        },
+        {
+            "Conditions": [],
+            "Status": "CREATED",
+            "Triggers": [],
+            "Name": "Start_Container",
+            "Items": [
+                {
+                    "Conditions": [],
+                    "Status": "CREATED",
+                    "Triggers": [
+                        {
+                            "Name": "Failures to MQTT broker_Trigger",
+                            "Status": "CREATED"
+                        }
+                    ],
+                    "Name": "Startup_Container",
+                    "Items": [
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "MQTT Sequence Start_Container",
+                            "Items": [
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Power-on and connect to mount_Container",
+                            "Items": [
+                                {
+                                    "TargetTime": "2025-09-26T18:20:59.9999615-07:00",
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time",
+                                    "CalculatedWaitDuration": "04:03:47.7473969"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Delay": 10,
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time Span"
+                                },
+                                {
+                                    "Status": "CREATED",
+                                    "Value": 1,
+                                    "Name": "Set Switch Value",
+                                    "Index": 2
+                                },
+                                {
+                                    "Status": "CREATED",
+                                    "Value": 1,
+                                    "Name": "Set Switch Value",
+                                    "Index": 1
+                                },
+                                {
+                                    "Delay": 120,
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time Span"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\lights-outside-off.bat\"",
+                                    "Status": "CREATED",
+                                    "Name": "External Script"
+                                },
+                                {
+                                    "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\lights-inside-off.bat\"",
+                                    "Status": "CREATED",
+                                    "Name": "External Script"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Open the roof_Container",
+                            "Items": [
+                                {
+                                    "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\roof-on.bat\"",
+                                    "Status": "CREATED",
+                                    "Name": "External Script"
+                                },
+                                {
+                                    "Delay": 30,
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time Span"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Open Dome Shutter",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Delay": 30,
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time Span"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\roof-off.bat\"",
+                                    "Status": "CREATED",
+                                    "Name": "External Script"
+                                },
+                                {
+                                    "Conditions": [],
+                                    "Status": "CREATED",
+                                    "Triggers": [],
+                                    "Name": "MQTT Roof Satus_Container",
+                                    "Items": [
+                                        {
+                                            "Name": "Publish to MQTT broker",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Name": "Publish to MQTT broker",
+                                            "Status": "CREATED"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Connect Camera 15min before Dusk_Container",
+                            "Items": [
+                                {
+                                    "TargetTime": "2025-09-26T19:16:30.9999651-07:00",
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time",
+                                    "CalculatedWaitDuration": "04:59:18.7463267"
+                                },
+                                {
+                                    "CurrentAltitude": 26.13,
+                                    "Status": "CREATED",
+                                    "Altitude": 5,
+                                    "Name": "Wait if Moon Altitude",
+                                    "ExpectedTime": "20:31"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Cool Camera and connect flat_Container",
+                            "Items": [
+                                {
+                                    "MinCoolingTime": 2,
+                                    "Status": "CREATED",
+                                    "Temperature": 0,
+                                    "Name": "Cool Camera"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Connect Equipment",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Final startup steps_Container",
+                            "Items": [
+                                {
+                                    "Name": "Unpark Scope",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "MQTT Sequence End_Container",
+                            "Items": [
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Conditions": [],
+            "Status": "CREATED",
+            "Triggers": [],
+            "Name": "Targets_Container",
+            "Items": [
+                {
+                    "Conditions": [],
+                    "Status": "CREATED",
+                    "Triggers": [
+                        {
+                            "TargetDrift": 10,
+                            "Drift": 0.4829634644561123,
+                            "Coordinates": {
+                                "Coordinates": {
+                                    "RA": 21.825833333333332,
+                                    "RAString": "21:49:33",
+                                    "RADegrees": 327.3875,
+                                    "Dec": 47.433638888888886,
+                                    "DecString": "47° 26' 01\"",
+                                    "Epoch": "J2000",
+                                    "DateTime": {
+                                        "Now": "2025-09-26T14:17:12.2545179-07:00",
+                                        "UtcNow": "2025-09-26T21:17:12.2545236Z"
+                                    }
+                                },
+                                "RAHours": 21,
+                                "RAMinutes": 49,
+                                "RASeconds": 33,
+                                "NegativeDec": false,
+                                "DecDegrees": 47,
+                                "DecMinutes": 26,
+                                "DecSeconds": 1.1
+                            },
+                            "Status": "CREATED",
+                            "Name": "Center After Drift_Trigger"
+                        },
+                        {
+                            "Name": "AF After Filter Change_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Camera on Download Failure_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Name": "Reconnect Equipment_Trigger",
+                            "Status": "CREATED"
+                        },
+                        {
+                            "Status": "CREATED",
+                            "Name": "Meridian Flip_Trigger",
+                            "TimeToFlip": "NaN"
+                        },
+                        {
+                            "Name": "Failures to MQTT broker_Trigger",
+                            "Status": "CREATED"
+                        }
+                    ],
+                    "Name": "Cocoon Nebula_Container",
+                    "Items": [
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Wait Conditions_Container",
+                            "Items": [
+                                {
+                                    "CurrentAltitude": 26.13,
+                                    "Status": "CREATED",
+                                    "Altitude": 0,
+                                    "Name": "Wait if Moon Altitude",
+                                    "ExpectedTime": "21:03"
+                                },
+                                {
+                                    "CurrentAltitude": 8.46,
+                                    "Status": "CREATED",
+                                    "Altitude": 25,
+                                    "Name": "Wait for Altitude",
+                                    "ExpectedTime": "16:15"
+                                },
+                                {
+                                    "TargetTime": "2025-09-26T20:00:45.9999869-07:00",
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time",
+                                    "CalculatedWaitDuration": "05:43:33.7462426"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "MQTT Target start_Container",
+                            "Items": [
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Prep target Mono_Container",
+                            "Items": [
+                                {
+                                    "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\lights-outside-off.bat\"",
+                                    "Status": "CREATED",
+                                    "Name": "External Script"
+                                },
+                                {
+                                    "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\lights-inside-off.bat\"",
+                                    "Status": "CREATED",
+                                    "Name": "External Script"
+                                },
+                                {
+                                    "Name": "Open Flat Panel Cover",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Filter": "L",
+                                    "Status": "CREATED",
+                                    "Name": "Switch Filter"
+                                },
+                                {
+                                    "Coordinates": {
+                                        "RA": 21.825833333333332,
+                                        "RAString": "21:49:33",
+                                        "RADegrees": 327.3875,
+                                        "Dec": 47.433638888888886,
+                                        "DecString": "47° 26' 01\"",
+                                        "Epoch": "J2000",
+                                        "DateTime": {
+                                            "Now": "2025-09-26T14:17:12.2546532-07:00",
+                                            "UtcNow": "2025-09-26T21:17:12.2546594Z"
+                                        }
+                                    },
+                                    "Status": "CREATED",
+                                    "Name": "Slew To Ra/Dec"
+                                },
+                                {
+                                    "Name": "Run Autofocus",
+                                    "Status": "DISABLED"
+                                },
+                                {
+                                    "Coordinates": {
+                                        "RA": 21.825833333333332,
+                                        "RAString": "21:49:33",
+                                        "RADegrees": 327.3875,
+                                        "Dec": 47.433638888888886,
+                                        "DecString": "47° 26' 01\"",
+                                        "Epoch": "J2000",
+                                        "DateTime": {
+                                            "Now": "2025-09-26T14:17:12.2546848-07:00",
+                                            "UtcNow": "2025-09-26T21:17:12.2546874Z"
+                                        }
+                                    },
+                                    "Status": "CREATED",
+                                    "Name": "Slew, center and rotate"
+                                },
+                                {
+                                    "Delay": 20,
+                                    "Status": "CREATED",
+                                    "Name": "Wait for Time Span"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [
+                                {
+                                    "RemainingTime": "00:00:00",
+                                    "TargetTime": "2025-09-26T14:17:12.2540091-07:00",
+                                    "Status": "CREATED",
+                                    "Name": "Loop Until Time_Condition"
+                                },
+                                {
+                                    "Status": "CREATED",
+                                    "CompletedIterations": 0,
+                                    "Name": "Loop For Iterations_Condition",
+                                    "Iterations": 1
+                                },
+                                {
+                                    "CurrentAltitude": 25.58,
+                                    "Status": "CREATED",
+                                    "Altitude": 0,
+                                    "Name": "Loop until Moon Altitude_Condition",
+                                    "ExpectedTime": "Now"
+                                },
+                                {
+                                    "CurrentAltitude": 8.46,
+                                    "Status": "CREATED",
+                                    "Altitude": 25,
+                                    "Name": "Loop until Altitude Below_Condition",
+                                    "ExpectedTime": "04:09"
+                                }
+                            ],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Images_Container",
+                            "Items": [
+                                {
+                                    "Conditions": [],
+                                    "Status": "DISABLED",
+                                    "Triggers": [],
+                                    "Name": "L_Container",
+                                    "Items": [
+                                        {
+                                            "Conditions": [],
+                                            "Status": "CREATED",
+                                            "Triggers": [
+                                                {
+                                                    "DeltaExposures": 25,
+                                                    "Exposures": 5,
+                                                    "Status": "CREATED",
+                                                    "Name": "AF After # Exposures_Trigger"
+                                                }
+                                            ],
+                                            "Name": "Exposure Set Mono_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Open Flat Panel Cover",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Filter": "L",
+                                                    "Status": "CREATED",
+                                                    "Name": "Switch Filter"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "MQTT Filter Change_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Publish to MQTT broker",
+                                                            "Status": "CREATED"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "Name": "Run Autofocus",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "Take flats Mono_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Stop Guiding",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Close Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Set Brightness",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Conditions": [
+                                                                {
+                                                                    "Status": "CREATED",
+                                                                    "CompletedIterations": 0,
+                                                                    "Name": "Loop For Iterations_Condition",
+                                                                    "Iterations": 100
+                                                                }
+                                                            ],
+                                                            "Status": "CREATED",
+                                                            "Triggers": [],
+                                                            "Name": "Image loop_Container",
+                                                            "Items": [
+                                                                {
+                                                                    "ExposureCount": 100,
+                                                                    "Binning": {
+                                                                        "Name": "1x1",
+                                                                        "X": 1,
+                                                                        "Y": 1
+                                                                    },
+                                                                    "Name": "Take Exposure",
+                                                                    "Offset": -1,
+                                                                    "Gain": -1,
+                                                                    "Type": "FLAT",
+                                                                    "ExposureTime": 0.1,
+                                                                    "Status": "CREATED"
+                                                                },
+                                                                {
+                                                                    "Delay": 3,
+                                                                    "Status": "CREATED",
+                                                                    "Name": "Wait for Time Span"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Delay": 5,
+                                                            "Status": "CREATED",
+                                                            "Name": "Wait for Time Span"
+                                                        },
+                                                        {
+                                                            "Name": "Open Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "ForceCalibration": false,
+                                                            "Status": "CREATED",
+                                                            "Name": "Start Guiding"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "ExposureCount": 109,
+                                                    "Binning": {
+                                                        "Name": "1x1",
+                                                        "X": 1,
+                                                        "Y": 1
+                                                    },
+                                                    "Name": "Smart Exposure",
+                                                    "DitherTargetExposures": 10,
+                                                    "DitherProgressExposures": 2,
+                                                    "Offset": 50,
+                                                    "Gain": 100,
+                                                    "Type": "LIGHT",
+                                                    "Filter": "L",
+                                                    "ExposureTime": 60,
+                                                    "Status": "CREATED",
+                                                    "Iterations": 109
+                                                },
+                                                {
+                                                    "Name": "Stop Guiding",
+                                                    "Status": "CREATED"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Conditions": [],
+                                    "Status": "DISABLED",
+                                    "Triggers": [],
+                                    "Name": "RGB_Container",
+                                    "Items": [
+                                        {
+                                            "Conditions": [],
+                                            "Status": "DISABLED",
+                                            "Triggers": [
+                                                {
+                                                    "DeltaExposures": 25,
+                                                    "Exposures": 24,
+                                                    "Status": "CREATED",
+                                                    "Name": "AF After # Exposures_Trigger"
+                                                }
+                                            ],
+                                            "Name": "R_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Open Flat Panel Cover",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Filter": "R",
+                                                    "Status": "CREATED",
+                                                    "Name": "Switch Filter"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "MQTT Filter Change_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Publish to MQTT broker",
+                                                            "Status": "CREATED"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "Name": "Run Autofocus",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "Take flats Mono_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Stop Guiding",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Close Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Set Brightness",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Conditions": [
+                                                                {
+                                                                    "Status": "CREATED",
+                                                                    "CompletedIterations": 0,
+                                                                    "Name": "Loop For Iterations_Condition",
+                                                                    "Iterations": 100
+                                                                }
+                                                            ],
+                                                            "Status": "CREATED",
+                                                            "Triggers": [],
+                                                            "Name": "Image loop_Container",
+                                                            "Items": [
+                                                                {
+                                                                    "ExposureCount": 100,
+                                                                    "Binning": {
+                                                                        "Name": "1x1",
+                                                                        "X": 1,
+                                                                        "Y": 1
+                                                                    },
+                                                                    "Name": "Take Exposure",
+                                                                    "Offset": -1,
+                                                                    "Gain": -1,
+                                                                    "Type": "FLAT",
+                                                                    "ExposureTime": 1,
+                                                                    "Status": "CREATED"
+                                                                },
+                                                                {
+                                                                    "Delay": 3,
+                                                                    "Status": "CREATED",
+                                                                    "Name": "Wait for Time Span"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Delay": 5,
+                                                            "Status": "CREATED",
+                                                            "Name": "Wait for Time Span"
+                                                        },
+                                                        {
+                                                            "Name": "Open Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "ForceCalibration": false,
+                                                            "Status": "CREATED",
+                                                            "Name": "Start Guiding"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "ExposureCount": 100,
+                                                    "Binning": {
+                                                        "Name": "1x1",
+                                                        "X": 1,
+                                                        "Y": 1
+                                                    },
+                                                    "Name": "Smart Exposure",
+                                                    "DitherTargetExposures": 10,
+                                                    "DitherProgressExposures": 2,
+                                                    "Offset": -1,
+                                                    "Gain": -1,
+                                                    "Type": "LIGHT",
+                                                    "Filter": "R",
+                                                    "ExposureTime": 60,
+                                                    "Status": "CREATED",
+                                                    "Iterations": 100
+                                                },
+                                                {
+                                                    "Name": "Stop Guiding",
+                                                    "Status": "CREATED"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "Conditions": [],
+                                            "Status": "DISABLED",
+                                            "Triggers": [
+                                                {
+                                                    "DeltaExposures": 10,
+                                                    "Exposures": 2,
+                                                    "Status": "CREATED",
+                                                    "Name": "AF After # Exposures_Trigger"
+                                                }
+                                            ],
+                                            "Name": "G_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Open Flat Panel Cover",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Filter": "G",
+                                                    "Status": "CREATED",
+                                                    "Name": "Switch Filter"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "MQTT Filter Change_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Publish to MQTT broker",
+                                                            "Status": "CREATED"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "Name": "Run Autofocus",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "Take flats Mono_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Stop Guiding",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Close Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Set Brightness",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Conditions": [
+                                                                {
+                                                                    "Status": "CREATED",
+                                                                    "CompletedIterations": 0,
+                                                                    "Name": "Loop For Iterations_Condition",
+                                                                    "Iterations": 100
+                                                                }
+                                                            ],
+                                                            "Status": "CREATED",
+                                                            "Triggers": [],
+                                                            "Name": "Image loop_Container",
+                                                            "Items": [
+                                                                {
+                                                                    "ExposureCount": 200,
+                                                                    "Binning": {
+                                                                        "Name": "1x1",
+                                                                        "X": 1,
+                                                                        "Y": 1
+                                                                    },
+                                                                    "Name": "Take Exposure",
+                                                                    "Offset": -1,
+                                                                    "Gain": -1,
+                                                                    "Type": "FLAT",
+                                                                    "ExposureTime": 0.1,
+                                                                    "Status": "CREATED"
+                                                                },
+                                                                {
+                                                                    "Delay": 3,
+                                                                    "Status": "CREATED",
+                                                                    "Name": "Wait for Time Span"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Delay": 5,
+                                                            "Status": "CREATED",
+                                                            "Name": "Wait for Time Span"
+                                                        },
+                                                        {
+                                                            "Name": "Open Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "ForceCalibration": false,
+                                                            "Status": "CREATED",
+                                                            "Name": "Start Guiding"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "ExposureCount": 100,
+                                                    "Binning": {
+                                                        "Name": "1x1",
+                                                        "X": 1,
+                                                        "Y": 1
+                                                    },
+                                                    "Name": "Smart Exposure",
+                                                    "DitherTargetExposures": 10,
+                                                    "DitherProgressExposures": 2,
+                                                    "Offset": -1,
+                                                    "Gain": -1,
+                                                    "Type": "LIGHT",
+                                                    "Filter": "G",
+                                                    "ExposureTime": 60,
+                                                    "Status": "CREATED",
+                                                    "Iterations": 53
+                                                },
+                                                {
+                                                    "Name": "Stop Guiding",
+                                                    "Status": "CREATED"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "Conditions": [],
+                                            "Status": "DISABLED",
+                                            "Triggers": [
+                                                {
+                                                    "DeltaExposures": 15,
+                                                    "Exposures": 9,
+                                                    "Status": "CREATED",
+                                                    "Name": "AF After # Exposures_Trigger"
+                                                }
+                                            ],
+                                            "Name": "B_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Open Flat Panel Cover",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Filter": "B",
+                                                    "Status": "CREATED",
+                                                    "Name": "Switch Filter"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "MQTT Filter Change_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Publish to MQTT broker",
+                                                            "Status": "CREATED"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "Name": "Run Autofocus",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Conditions": [],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "Take flats Mono_Container",
+                                                    "Items": [
+                                                        {
+                                                            "Name": "Stop Guiding",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Close Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Name": "Set Brightness",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Conditions": [
+                                                                {
+                                                                    "Status": "CREATED",
+                                                                    "CompletedIterations": 0,
+                                                                    "Name": "Loop For Iterations_Condition",
+                                                                    "Iterations": 100
+                                                                }
+                                                            ],
+                                                            "Status": "CREATED",
+                                                            "Triggers": [],
+                                                            "Name": "Image loop_Container",
+                                                            "Items": [
+                                                                {
+                                                                    "ExposureCount": 100,
+                                                                    "Binning": {
+                                                                        "Name": "1x1",
+                                                                        "X": 1,
+                                                                        "Y": 1
+                                                                    },
+                                                                    "Name": "Take Exposure",
+                                                                    "Offset": -1,
+                                                                    "Gain": -1,
+                                                                    "Type": "FLAT",
+                                                                    "ExposureTime": 0.1,
+                                                                    "Status": "CREATED"
+                                                                },
+                                                                {
+                                                                    "Delay": 3,
+                                                                    "Status": "CREATED",
+                                                                    "Name": "Wait for Time Span"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "Name": "Toggle Light",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Delay": 5,
+                                                            "Status": "CREATED",
+                                                            "Name": "Wait for Time Span"
+                                                        },
+                                                        {
+                                                            "Name": "Open Flat Panel Cover",
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "ForceCalibration": false,
+                                                            "Status": "CREATED",
+                                                            "Name": "Start Guiding"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "ExposureCount": 100,
+                                                    "Binning": {
+                                                        "Name": "1x1",
+                                                        "X": 1,
+                                                        "Y": 1
+                                                    },
+                                                    "Name": "Smart Exposure",
+                                                    "DitherTargetExposures": 10,
+                                                    "DitherProgressExposures": 2,
+                                                    "Offset": -1,
+                                                    "Gain": -1,
+                                                    "Type": "LIGHT",
+                                                    "Filter": "B",
+                                                    "ExposureTime": 60,
+                                                    "Status": "CREATED",
+                                                    "Iterations": 100
+                                                },
+                                                {
+                                                    "Name": "Stop Guiding",
+                                                    "Status": "CREATED"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Conditions": [],
+                                    "Status": "CREATED",
+                                    "Triggers": [
+                                        {
+                                            "DeltaExposures": 10,
+                                            "Exposures": 9,
+                                            "Status": "CREATED",
+                                            "Name": "AF After # Exposures_Trigger"
+                                        }
+                                    ],
+                                    "Name": "H_Container",
+                                    "Items": [
+                                        {
+                                            "Name": "Open Flat Panel Cover",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Filter": "H",
+                                            "Status": "CREATED",
+                                            "Name": "Switch Filter"
+                                        },
+                                        {
+                                            "Conditions": [],
+                                            "Status": "CREATED",
+                                            "Triggers": [],
+                                            "Name": "MQTT Filter Change_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Publish to MQTT broker",
+                                                    "Status": "CREATED"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "Name": "Run Autofocus",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Conditions": [],
+                                            "Status": "CREATED",
+                                            "Triggers": [],
+                                            "Name": "Take flats Mono_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Stop Guiding",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Name": "Close Flat Panel Cover",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Name": "Toggle Light",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Name": "Set Brightness",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Conditions": [
+                                                        {
+                                                            "Status": "CREATED",
+                                                            "CompletedIterations": 0,
+                                                            "Name": "Loop For Iterations_Condition",
+                                                            "Iterations": 100
+                                                        }
+                                                    ],
+                                                    "Status": "CREATED",
+                                                    "Triggers": [],
+                                                    "Name": "Image loop_Container",
+                                                    "Items": [
+                                                        {
+                                                            "ExposureCount": 200,
+                                                            "Binning": {
+                                                                "Name": "1x1",
+                                                                "X": 1,
+                                                                "Y": 1
+                                                            },
+                                                            "Name": "Take Exposure",
+                                                            "Offset": -1,
+                                                            "Gain": -1,
+                                                            "Type": "FLAT",
+                                                            "ExposureTime": 1,
+                                                            "Status": "CREATED"
+                                                        },
+                                                        {
+                                                            "Delay": 3,
+                                                            "Status": "CREATED",
+                                                            "Name": "Wait for Time Span"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "Name": "Toggle Light",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Delay": 5,
+                                                    "Status": "CREATED",
+                                                    "Name": "Wait for Time Span"
+                                                },
+                                                {
+                                                    "Name": "Open Flat Panel Cover",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "ForceCalibration": false,
+                                                    "Status": "CREATED",
+                                                    "Name": "Start Guiding"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "ExposureCount": 153,
+                                            "Binning": {
+                                                "Name": "1x1",
+                                                "X": 1,
+                                                "Y": 1
+                                            },
+                                            "Name": "Smart Exposure",
+                                            "DitherTargetExposures": 10,
+                                            "DitherProgressExposures": 2,
+                                            "Offset": -1,
+                                            "Gain": -1,
+                                            "Type": "LIGHT",
+                                            "Filter": "H",
+                                            "ExposureTime": 180,
+                                            "Status": "CREATED",
+                                            "Iterations": 100
+                                        },
+                                        {
+                                            "Name": "Stop Guiding",
+                                            "Status": "CREATED"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Name": "Stop Guiding",
+                            "Status": "CREATED"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Conditions": [],
+            "Status": "CREATED",
+            "Triggers": [],
+            "Name": "End_Container",
+            "Items": [
+                {
+                    "Conditions": [],
+                    "Status": "CREATED",
+                    "Triggers": [],
+                    "Name": "Shutdown_Container",
+                    "Items": [
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "MQTT Sequence Start_Container",
+                            "Items": [
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Secure scope and close roof_Container",
+                            "Items": [
+                                {
+                                    "Name": "Stop Guiding",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Conditions": [],
+                                    "Status": "CREATED",
+                                    "Triggers": [],
+                                    "Name": "Park_Container",
+                                    "Items": [
+                                        {
+                                            "Name": "Close Flat Panel Cover",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Name": "Park Scope",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Name": "Rotate by mechanical angle",
+                                            "Status": "CREATED"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Conditions": [],
+                                    "Status": "CREATED",
+                                    "Triggers": [],
+                                    "Name": "Close the roof_Container",
+                                    "Items": [
+                                        {
+                                            "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\roof-on.bat\"",
+                                            "Status": "CREATED",
+                                            "Name": "External Script"
+                                        },
+                                        {
+                                            "Delay": 30,
+                                            "Status": "CREATED",
+                                            "Name": "Wait for Time Span"
+                                        },
+                                        {
+                                            "Name": "Connect Equipment",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Name": "Close Dome Shutter",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Delay": 30,
+                                            "Status": "CREATED",
+                                            "Name": "Wait for Time Span"
+                                        },
+                                        {
+                                            "Name": "Disconnect Equipment",
+                                            "Status": "CREATED"
+                                        },
+                                        {
+                                            "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\roof-off.bat\"",
+                                            "Status": "CREATED",
+                                            "Name": "External Script"
+                                        },
+                                        {
+                                            "Conditions": [],
+                                            "Status": "CREATED",
+                                            "Triggers": [],
+                                            "Name": "MQTT Roof Satus_Container",
+                                            "Items": [
+                                                {
+                                                    "Name": "Publish to MQTT broker",
+                                                    "Status": "CREATED"
+                                                },
+                                                {
+                                                    "Name": "Publish to MQTT broker",
+                                                    "Status": "CREATED"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Conditions": [],
+                                    "Status": "CREATED",
+                                    "Triggers": [],
+                                    "Name": "Warm Cam_Container",
+                                    "Items": [
+                                        {
+                                            "MinWarmingTime": 0,
+                                            "Status": "CREATED",
+                                            "Name": "Warm Camera"
+                                        },
+                                        {
+                                            "Script": "\"C:\\Users\\miche\\OneDrive\\Documents\\N.I.N.A\\lights-inside-low.bat\"",
+                                            "Status": "CREATED",
+                                            "Name": "External Script"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "Disconnect and power off_Container",
+                            "Items": [
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Shutdown PHD2",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                },
+                                {
+                                    "Status": "CREATED",
+                                    "Value": 0,
+                                    "Name": "Set Switch Value",
+                                    "Index": 1
+                                },
+                                {
+                                    "Status": "CREATED",
+                                    "Value": 0,
+                                    "Name": "Set Switch Value",
+                                    "Index": 2
+                                },
+                                {
+                                    "Name": "Disconnect Equipment",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        },
+                        {
+                            "Conditions": [],
+                            "Status": "CREATED",
+                            "Triggers": [],
+                            "Name": "MQTT Sequence End_Container",
+                            "Items": [
+                                {
+                                    "Name": "Publish to MQTT broker",
+                                    "Status": "CREATED"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "Error": "",
+    "StatusCode": 200,
+    "Success": true,
+    "Type": "API"
+}

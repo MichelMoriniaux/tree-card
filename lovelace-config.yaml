@@ -1,0 +1,62 @@
+# Home Assistant Lovelace Configuration for Tree Card
+# 
+# To use this card:
+# 1. Copy tree-card.js to your Home Assistant www folder
+# 2. Copy tree-card.css to your Home Assistant www folder  
+# 3. Add the card to your Lovelace dashboard
+# 4. Create an input_text entity with your JSON data
+
+# Example Lovelace card configuration:
+type: custom:tree-card
+entity: input_text.json_data
+title: "NINA Sequence Tree View"
+
+# Alternative configuration with more options:
+# type: custom:tree-card
+# entity: input_text.json_data
+# title: "Astronomy Sequence"
+# card_mod:
+#   style: |
+#     ha-card {
+#       --ha-card-border-radius: 12px;
+#       --ha-card-box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+#     }
+
+# To create the input_text entity, add this to your configuration.yaml:
+# input_text:
+#   json_data:
+#     name: "JSON Data"
+#     initial: |
+#       {
+#         "Response": [
+#           {
+#             "GlobalTriggers": []
+#           },
+#           {
+#             "Conditions": [],
+#             "Status": "CREATED",
+#             "Triggers": [],
+#             "Name": "Start_Container",
+#             "Items": [
+#               {
+#                 "Name": "Startup_Container",
+#                 "Status": "CREATED"
+#               }
+#             ]
+#           }
+#         ]
+#       }
+
+# Or use a REST sensor to fetch JSON data from an API:
+# rest:
+#   - resource: "http://your-api-endpoint.com/data"
+#     sensor:
+#       - name: "API Data"
+#         value_template: "{{ value_json }}"
+#         json_attributes:
+#           - "*"
+
+# Then use the sensor in your card:
+# type: custom:tree-card
+# entity: sensor.api_data
+# title: "API Data Tree"

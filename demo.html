@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Card Demo</title>
+    <link rel="stylesheet" href="tree-card.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .demo-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .demo-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-card">
+            <h1 class="demo-title">Tree Card Demo</h1>
+            <p>This is a demonstration of how the Tree Card would display your JSON data:</p>
+        </div>
+        
+        <div class="demo-card">
+            <h2>Sample Tree Structure</h2>
+            <div class="tree-container">
+                <div class="tree-item" style="margin-left: 0px;">
+                    <div class="tree-node">
+                        <span class="tree-toggle" data-target="item-0-1">▶</span>
+                        <span class="tree-name">Start_Container</span>
+                        <span class="tree-status status-created">CREATED</span>
+                    </div>
+                    <div class="tree-children" id="item-0-1" style="display: none;">
+                        <div class="tree-item" style="margin-left: 20px;">
+                            <div class="tree-node">
+                                <span class="tree-toggle" data-target="item-1-1">▶</span>
+                                <span class="tree-name">Startup_Container</span>
+                                <span class="tree-status status-created">CREATED</span>
+                            </div>
+                            <div class="tree-children" id="item-1-1" style="display: none;">
+                                <div class="tree-item" style="margin-left: 40px;">
+                                    <div class="tree-node">
+                                        <span class="tree-toggle" data-target="item-2-1">▶</span>
+                                        <span class="tree-name">MQTT Sequence Start_Container</span>
+                                        <span class="tree-status status-created">CREATED</span>
+                                    </div>
+                                    <div class="tree-children" id="item-2-1" style="display: none;">
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-spacer"></span>
+                                                <span class="tree-name">Publish to MQTT broker</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-item" style="margin-left: 40px;">
+                                    <div class="tree-node">
+                                        <span class="tree-toggle" data-target="item-2-2">▶</span>
+                                        <span class="tree-name">Power-on and connect to mount_Container</span>
+                                        <span class="tree-status status-created">CREATED</span>
+                                    </div>
+                                    <div class="tree-children" id="item-2-2" style="display: none;">
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-spacer"></span>
+                                                <span class="tree-name">Wait for Time</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-spacer"></span>
+                                                <span class="tree-name">Connect Equipment</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-spacer"></span>
+                                                <span class="tree-name">Set Switch Value</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tree-item" style="margin-left: 0px;">
+                    <div class="tree-node">
+                        <span class="tree-toggle" data-target="item-0-2">▶</span>
+                        <span class="tree-name">Targets_Container</span>
+                        <span class="tree-status status-created">CREATED</span>
+                    </div>
+                    <div class="tree-children" id="item-0-2" style="display: none;">
+                        <div class="tree-item" style="margin-left: 20px;">
+                            <div class="tree-node">
+                                <span class="tree-toggle" data-target="item-1-2">▶</span>
+                                <span class="tree-name">Cocoon Nebula_Container</span>
+                                <span class="tree-status status-created">CREATED</span>
+                            </div>
+                            <div class="tree-children" id="item-1-2" style="display: none;">
+                                <div class="tree-item" style="margin-left: 40px;">
+                                    <div class="tree-node">
+                                        <span class="tree-toggle" data-target="item-2-3">▶</span>
+                                        <span class="tree-name">Images_Container</span>
+                                        <span class="tree-status status-created">CREATED</span>
+                                    </div>
+                                    <div class="tree-children" id="item-2-3" style="display: none;">
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-toggle" data-target="item-3-1">▶</span>
+                                                <span class="tree-name">L_Container</span>
+                                                <span class="tree-status status-disabled">DISABLED</span>
+                                            </div>
+                                            <div class="tree-children" id="item-3-1" style="display: none;">
+                                                <div class="tree-item" style="margin-left: 80px;">
+                                                    <div class="tree-node">
+                                                        <span class="tree-spacer"></span>
+                                                        <span class="tree-name">Smart Exposure</span>
+                                                        <span class="tree-status status-created">CREATED</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-toggle" data-target="item-3-2">▶</span>
+                                                <span class="tree-name">H_Container</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                            <div class="tree-children" id="item-3-2" style="display: none;">
+                                                <div class="tree-item" style="margin-left: 80px;">
+                                                    <div class="tree-node">
+                                                        <span class="tree-spacer"></span>
+                                                        <span class="tree-name">Smart Exposure</span>
+                                                        <span class="tree-status status-created">CREATED</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tree-item" style="margin-left: 0px;">
+                    <div class="tree-node">
+                        <span class="tree-toggle" data-target="item-0-3">▶</span>
+                        <span class="tree-name">End_Container</span>
+                        <span class="tree-status status-created">CREATED</span>
+                    </div>
+                    <div class="tree-children" id="item-0-3" style="display: none;">
+                        <div class="tree-item" style="margin-left: 20px;">
+                            <div class="tree-node">
+                                <span class="tree-toggle" data-target="item-1-3">▶</span>
+                                <span class="tree-name">Shutdown_Container</span>
+                                <span class="tree-status status-created">CREATED</span>
+                            </div>
+                            <div class="tree-children" id="item-1-3" style="display: none;">
+                                <div class="tree-item" style="margin-left: 40px;">
+                                    <div class="tree-node">
+                                        <span class="tree-toggle" data-target="item-2-4">▶</span>
+                                        <span class="tree-name">Secure scope and close roof_Container</span>
+                                        <span class="tree-status status-created">CREATED</span>
+                                    </div>
+                                    <div class="tree-children" id="item-2-4" style="display: none;">
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-spacer"></span>
+                                                <span class="tree-name">Stop Guiding</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-item" style="margin-left: 60px;">
+                                            <div class="tree-node">
+                                                <span class="tree-toggle" data-target="item-3-3">▶</span>
+                                                <span class="tree-name">Park_Container</span>
+                                                <span class="tree-status status-created">CREATED</span>
+                                            </div>
+                                            <div class="tree-children" id="item-3-3" style="display: none;">
+                                                <div class="tree-item" style="margin-left: 80px;">
+                                                    <div class="tree-node">
+                                                        <span class="tree-spacer"></span>
+                                                        <span class="tree-name">Close Flat Panel Cover</span>
+                                                        <span class="tree-status status-created">CREATED</span>
+                                                    </div>
+                                                </div>
+                                                <div class="tree-item" style="margin-left: 80px;">
+                                                    <div class="tree-node">
+                                                        <span class="tree-spacer"></span>
+                                                        <span class="tree-name">Park Scope</span>
+                                                        <span class="tree-status status-created">CREATED</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-card">
+            <h2>Features</h2>
+            <ul>
+                <li>Click the ▶ arrows to expand/collapse branches</li>
+                <li>Status badges show the current state of each item</li>
+                <li>Hierarchical indentation shows the structure</li>
+                <li>Responsive design works on all devices</li>
+                <li>Dark theme support</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Add click handlers for the demo
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggles = document.querySelectorAll('.tree-toggle');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const targetId = toggle.getAttribute('data-target');
+                    const target = document.querySelector(`#${targetId}`);
+                    
+                    if (target.style.display === 'none') {
+                        target.style.display = 'block';
+                        toggle.textContent = '▼';
+                    } else {
+                        target.style.display = 'none';
+                        toggle.textContent = '▶';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
