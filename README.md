@@ -1,9 +1,11 @@
 # Tree Card for Home Assistant
 
-A custom Lovelace card that displays JSON data as an interactive, indented tree structure based on the `Name` key.
+A custom Lovelace card that displays JSON data as an interactive, indented tree structure. The card can fetch data from REST APIs or read from Home Assistant entities, with support for automatic refresh intervals.
 
 ## Features
 
+- **REST API Integration**: Fetch data directly from external APIs
+- **Auto-Refresh**: Configurable intervals for live data updates
 - **Hierarchical Display**: Shows nested JSON objects as an expandable tree
 - **Interactive**: Click to expand/collapse branches
 - **Status Indicators**: Color-coded status badges for different states
@@ -35,20 +37,24 @@ A custom Lovelace card that displays JSON data as an interactive, indented tree 
 
 ## Usage
 
-### Basic Configuration
+### REST API Configuration
 
 ```yaml
 type: custom:tree-card
-entity: input_text.json_data
-title: "My Tree View"
+url: "https://api.example.com/data"
+attribute: "Response"
+title: "Live Data"
+interval: 30
 ```
 
 ### Advanced Configuration
 
 ```yaml
 type: custom:tree-card
-entity: sensor.api_data
-title: "API Data Tree"
+url: "https://api.example.com/status"
+attribute: "data"
+title: "System Status"
+interval: 60
 card_mod:
   style: |
     ha-card {
@@ -56,6 +62,15 @@ card_mod:
       --ha-card-box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 ```
+
+## Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `url` | string | - | REST API endpoint URL (required for API mode) |
+| `attribute` | string | "Response" | Top-level JSON key to extract from response |
+| `title` | string | "Tree View" | Card title displayed in header |
+| `interval` | number | 0 | Auto-refresh interval in seconds (0 = disabled) |
 
 ## Data Format
 
@@ -95,10 +110,35 @@ The card supports different status indicators with color coding:
 - **COMPLETED**: Green background
 - **FAILED**: Red background
 
-## Creating Data Sources
+## Data Sources
 
-### Using input_text
+### REST API Endpoints
 
+The card can fetch data directly from REST APIs. Simply provide the URL and the card will make HTTP GET requests to fetch the data.
+
+**Example API Response:**
+```json
+{
+  "Response": [
+    {
+      "Name": "Example Container",
+      "Status": "CREATED",
+      "Items": [
+        {
+          "Name": "Sub Container",
+          "Status": "RUNNING"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Home Assistant Entities
+
+For entity-based data sources, you can use:
+
+#### input_text
 Add to your `configuration.yaml`:
 
 ```yaml
@@ -116,18 +156,32 @@ input_text:
       }
 ```
 
-### Using REST Sensor
+## Auto-Refresh Examples
 
-Add to your `configuration.yaml`:
-
+### Live System Monitoring (30 seconds)
 ```yaml
-rest:
-  - resource: "http://your-api-endpoint.com/data"
-    sensor:
-      - name: "API Data"
-        value_template: "{{ value_json }}"
-        json_attributes:
-          - "*"
+type: custom:tree-card
+url: "https://api.mysystem.com/status"
+attribute: "components"
+interval: 30
+title: "System Status"
+```
+
+### Periodic Data Updates (5 minutes)
+```yaml
+type: custom:tree-card
+url: "https://api.weather.com/forecast"
+attribute: "forecast"
+interval: 300
+title: "Weather Forecast"
+```
+
+### No Auto-Refresh (Static Data)
+```yaml
+type: custom:tree-card
+url: "https://api.example.com/static-data"
+attribute: "data"
+title: "Static Information"
 ```
 
 ## Customization
@@ -138,7 +192,7 @@ You can customize the appearance by adding CSS to your Lovelace configuration:
 
 ```yaml
 type: custom:tree-card
-entity: input_text.json_data
+url: "https://api.example.com/static-data"
 card_mod:
   style: |
     .tree-name {
@@ -163,14 +217,24 @@ The card automatically:
 ### Card Not Loading
 
 1. Check that the JavaScript file is in the correct location
-2. Verify the entity exists and contains valid JSON
+2. Verify the URL is accessible or entity exists
 3. Check the browser console for JavaScript errors
+4. Ensure the REST API endpoint returns valid JSON
 
 ### Data Not Displaying
 
 1. Ensure your JSON has objects with `Name` properties
 2. Verify the JSON is valid (use a JSON validator)
-3. Check that the entity state contains the JSON data
+3. Check that the specified `attribute` key exists in the response
+4. For REST APIs, verify the endpoint is accessible and returns data
+5. Check network connectivity for REST API calls
+
+### Auto-Refresh Issues
+
+1. Verify the `interval` value is greater than 0
+2. Check that the REST API endpoint is stable and responsive
+3. Monitor browser console for network errors during refresh
+4. Consider increasing interval for slow APIs
 
 ### Styling Issues
 

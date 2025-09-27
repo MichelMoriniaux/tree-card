@@ -1,10 +1,13 @@
 class TreeCard extends HTMLElement {
   setConfig(config) {
     this.config = {
-      attribute: 'Response', // Default attribute name
+      url: '', // REST endpoint URL
+      attribute: 'Response', // Top-level key in JSON response
+      interval: 0, // Refresh interval in seconds (0 = no auto-refresh)
       ...config
     };
     this.render();
+    this.startInterval(); // Restart interval with new config
   }
 
   set hass(hass) {
@@ -12,44 +15,89 @@ class TreeCard extends HTMLElement {
     this.render();
   }
 
-  render() {
+  connectedCallback() {
+    this.startInterval();
+  }
+
+  disconnectedCallback() {
+    this.stopInterval();
+  }
+
+  async render() {
     if (!this.config || !this.hass) return;
 
-    // Get the JSON data from the input sensor
-    const entity = this.hass.states[this.config.entity];
-    if (!entity) {
-      this.innerHTML = `<div class="error">Entity ${this.config.entity} not found</div>`;
+    // Validate configuration
+    if (!this.config.url) {
+      this.innerHTML = `<div class="error">URL not configured</div>`;
       return;
     }
 
-    let jsonData;
-    try {
-      const attributeValue = entity.attributes[this.config.attribute];
-      if (attributeValue === undefined) {
-        this.innerHTML = `<div class="error">Attribute '${this.config.attribute}' not found in entity ${this.config.entity}</div>`;
-        return;
-      }
-      jsonData = JSON.parse(attributeValue);
-    } catch (e) {
-      this.innerHTML = `<div class="error">Invalid JSON in entity ${this.config.entity} ${this.config.attribute} attribute</div>`;
-      return;
-    }
-
-    // Create the tree structure
-    const treeHtml = this.createTree(jsonData, 0);
-    
+    // Show loading state
     this.innerHTML = `
       <ha-card header="${this.config.title || 'Tree View'}">
         <div class="card-content">
-          <div class="tree-container">
-            ${treeHtml}
-          </div>
+          <div class="loading">Loading...</div>
         </div>
       </ha-card>
     `;
 
-    // Add click handlers for expand/collapse
-    this.addEventListeners();
+    try {
+      // Make REST call
+      const response = await fetch(this.config.url);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const responseData = await response.json();
+      
+      // Extract data using the configured attribute as top-level key
+      let jsonData;
+      if (this.config.attribute && responseData[this.config.attribute] !== undefined) {
+        jsonData = responseData[this.config.attribute];
+      } else if (this.config.attribute) {
+        this.innerHTML = `<div class="error">Key '${this.config.attribute}' not found in response</div>`;
+        return;
+      } else {
+        jsonData = responseData;
+      }
+
+      // Create the tree structure
+      const treeHtml = this.createTree(jsonData, 0);
+      
+      this.innerHTML = `
+        <ha-card header="${this.config.title || 'Tree View'}">
+          <div class="card-content">
+            <div class="tree-container">
+              ${treeHtml}
+            </div>
+          </div>
+        </ha-card>
+      `;
+
+      // Add click handlers for expand/collapse
+      this.addEventListeners();
+      
+    } catch (error) {
+      this.innerHTML = `<div class="error">Failed to fetch data: ${error.message}</div>`;
+    }
+  }
+
+  startInterval() {
+    this.stopInterval(); // Clear any existing interval
+    
+    if (this.config && this.config.interval > 0) {
+      const intervalMs = this.config.interval * 1000; // Convert seconds to milliseconds
+      this.refreshInterval = setInterval(() => {
+        this.render();
+      }, intervalMs);
+    }
+  }
+
+  stopInterval() {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+      this.refreshInterval = null;
+    }
   }
 
   createTree(data, level) {
