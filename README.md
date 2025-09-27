@@ -24,12 +24,9 @@ A custom Lovelace card that displays JSON data as an interactive, indented tree 
    /config/www/tree-card.js
    ```
 
-2. Copy `tree-card.css` to your Home Assistant `www` folder:
-   ```
-   /config/www/tree-card.css
-   ```
+2. Add the card to your Lovelace dashboard using the card editor or YAML configuration.
 
-3. Add the card to your Lovelace dashboard using the card editor or YAML configuration.
+**Note**: The CSS styles are now integrated into the JavaScript file, so you only need to include the single `tree-card.js` file.
 
 ### Method 2: HACS Installation (if available)
 
@@ -236,9 +233,19 @@ title: "Static Information"
 
 ## Customization
 
-### Styling
+### Integrated Styles
 
-You can customize the appearance by adding CSS to your Lovelace configuration:
+The card includes all necessary CSS styles integrated directly into the JavaScript file. The styles are automatically injected when the card loads and include:
+
+- **Tree Structure Styling**: Proper indentation and visual hierarchy
+- **Interactive Elements**: Hover effects and smooth transitions
+- **Status Badges**: Color-coded status indicators (CREATED, RUNNING, FAILED, etc.)
+- **Dark Theme Support**: Automatic adaptation to Home Assistant's dark theme
+- **Responsive Design**: Mobile-friendly layout adjustments
+
+### Custom Styling
+
+You can override the default styles by adding custom CSS to your Lovelace configuration:
 
 ```yaml
 type: custom:tree-card
@@ -251,6 +258,10 @@ card_mod:
     }
     .tree-toggle {
       color: #1976d2;
+    }
+    .status-created {
+      background-color: #your-custom-color;
+      color: #your-text-color;
     }
 ```
 
@@ -290,14 +301,14 @@ The card automatically:
 
 1. Clear browser cache
 2. Check for CSS conflicts with other cards
-3. Verify the CSS file is loaded correctly
+3. Verify that styles are being injected (check browser developer tools)
 
 ## Development
 
 To modify the card:
 
-1. Edit `tree-card.js` for functionality changes
-2. Edit `tree-card.css` for styling changes
+1. Edit `tree-card.js` for both functionality and styling changes
+2. Styles are integrated in the `addStyles()` method within the JavaScript file
 3. Test in your Home Assistant environment
 4. Submit pull requests for improvements
 

@@ -1,4 +1,187 @@
-class TreeCard extends HTMLElement {  
+class TreeCard extends HTMLElement {
+  constructor() {
+    super();
+    this.addStyles();
+  }
+
+  addStyles() {
+    if (!document.getElementById('tree-card-styles')) {
+      const style = document.createElement('style');
+      style.id = 'tree-card-styles';
+      style.textContent = `
+        /* Tree Card Styles */
+        .tree-container {
+          font-family: 'Roboto', sans-serif;
+          line-height: 1.4;
+        }
+
+        .tree-item {
+          margin: 2px 0;
+          border-left: 1px solid #e0e0e0;
+          padding-left: 8px;
+        }
+
+        .tree-node {
+          display: flex;
+          align-items: center;
+          padding: 4px 0;
+          cursor: pointer;
+          border-radius: 4px;
+          transition: background-color 0.2s ease;
+        }
+
+        .tree-node:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .tree-toggle {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          text-align: center;
+          font-size: 12px;
+          color: #666;
+          cursor: pointer;
+          user-select: none;
+          margin-right: 8px;
+          transition: transform 0.2s ease;
+        }
+
+        .tree-toggle:hover {
+          color: #1976d2;
+          transform: scale(1.1);
+        }
+
+        .tree-spacer {
+          display: inline-block;
+          width: 16px;
+          margin-right: 8px;
+        }
+
+        .tree-name {
+          flex: 1;
+          font-weight: 500;
+          color: #333;
+          font-size: 14px;
+        }
+
+        .tree-status {
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-size: 11px;
+          font-weight: 500;
+          text-transform: uppercase;
+          margin-left: 8px;
+        }
+
+        .status-created {
+          background-color: #e8f5e8;
+          color: #2e7d32;
+        }
+
+        .status-disabled {
+          background-color: #fff3e0;
+          color: #f57c00;
+        }
+
+        .status-running {
+          background-color: #e3f2fd;
+          color: #1976d2;
+        }
+
+        .status-completed {
+          background-color: #e8f5e8;
+          color: #388e3c;
+        }
+
+        .status-failed {
+          background-color: #ffebee;
+          color: #d32f2f;
+        }
+
+        .tree-children {
+          margin-left: 16px;
+          border-left: 1px solid #e0e0e0;
+          padding-left: 8px;
+        }
+
+        /* Dark theme support */
+        @media (prefers-color-scheme: dark) {
+          .tree-item {
+            border-left-color: #424242;
+          }
+          
+          .tree-node:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+          }
+          
+          .tree-toggle {
+            color: #aaa;
+          }
+          
+          .tree-toggle:hover {
+            color: #64b5f6;
+          }
+          
+          .tree-name {
+            color: #e0e0e0;
+          }
+          
+          .tree-children {
+            border-left-color: #424242;
+          }
+          
+          .status-created {
+            background-color: #1b5e20;
+            color: #a5d6a7;
+          }
+          
+          .status-disabled {
+            background-color: #e65100;
+            color: #ffcc02;
+          }
+          
+          .status-running {
+            background-color: #0d47a1;
+            color: #90caf9;
+          }
+          
+          .status-completed {
+            background-color: #1b5e20;
+            color: #a5d6a7;
+          }
+          
+          .status-failed {
+            background-color: #b71c1c;
+            color: #ef9a9a;
+          }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+          .tree-item {
+            margin-left: 10px !important;
+          }
+          
+          .tree-children {
+            margin-left: 8px;
+          }
+          
+          .tree-name {
+            font-size: 13px;
+          }
+          
+          .tree-status {
+            font-size: 10px;
+            padding: 1px 6px;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+  
   setConfig(config) {
     this.config = {
       url: '', // REST endpoint URL
