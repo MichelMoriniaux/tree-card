@@ -11,7 +11,7 @@ class TreeCard extends HTMLElement {
   }
 
   set hass(hass) {
-    //this.hass = hass;
+    this.hass = hass;
     this.render();
   }
 
@@ -24,7 +24,7 @@ class TreeCard extends HTMLElement {
   }
 
   async render() {
-    if (!this.config || !hass) return;
+    if (!this.config || !this.hass) return;
 
     // Validate configuration
     if (!this.config.url) {
