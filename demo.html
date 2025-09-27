@@ -184,8 +184,9 @@
         }
 
         function addDemoStyles() {
-            if (currentCard && currentCard.shadowRoot) {
-                // Add demo-specific styles to the shadow root
+            if (currentCard) {
+                const root = currentCard.shadowRoot || currentCard;
+                // Add demo-specific styles to the root
                 const demoStyle = document.createElement('style');
                 demoStyle.textContent = `
                     .loading {
@@ -201,7 +202,7 @@
                         margin: 10px 0;
                     }
                 `;
-                currentCard.shadowRoot.appendChild(demoStyle);
+                root.appendChild(demoStyle);
             }
         }
 
@@ -218,17 +219,19 @@
 
         // Function to demonstrate shadow DOM access
         function inspectShadowDOM() {
-            if (currentCard && currentCard.shadowRoot) {
-                const treeNodes = currentCard.shadowRoot.querySelectorAll('.tree-node');
-                console.log(`Found ${treeNodes.length} tree nodes in shadow DOM`);
+            if (currentCard) {
+                const root = currentCard.shadowRoot || currentCard;
+                const treeNodes = root.querySelectorAll('.tree-node');
+                console.log(`Found ${treeNodes.length} tree nodes in ${currentCard.shadowRoot ? 'shadow DOM' : 'regular DOM'}`);
                 
-                const expandedItems = currentCard.shadowRoot.querySelectorAll('.tree-children[style*="block"]');
+                const expandedItems = root.querySelectorAll('.tree-children[style*="block"]');
                 console.log(`Found ${expandedItems.length} expanded items`);
                 
                 return {
                     totalNodes: treeNodes.length,
                     expandedItems: expandedItems.length,
-                    shadowRoot: currentCard.shadowRoot
+                    root: root,
+                    usingShadowDOM: !!currentCard.shadowRoot
                 };
             }
             return null;

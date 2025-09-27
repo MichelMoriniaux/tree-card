@@ -1,7 +1,16 @@
 class TreeCard extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
+    
+    // Check if shadow DOM is supported
+    if (this.attachShadow) {
+      this.attachShadow({ mode: 'open' });
+      this.useShadowDOM = true;
+    } else {
+      this.useShadowDOM = false;
+      console.warn('Shadow DOM not supported, falling back to regular DOM');
+    }
+    
     this.addStyles();
   }
 
@@ -177,7 +186,19 @@ class TreeCard extends HTMLElement {
         }
       }
     `;
-    this.shadowRoot.appendChild(style);
+    
+    if (this.useShadowDOM) {
+      this.shadowRoot.appendChild(style);
+    } else {
+      // Fallback: add styles to document head with scoped selectors
+      style.id = 'tree-card-styles-' + Math.random().toString(36).substr(2, 9);
+      style.textContent = style.textContent.replace(/(\.[a-zA-Z-]+)/g, `tree-card $1`);
+      document.head.appendChild(style);
+    }
+  }
+
+  getRootElement() {
+    return this.useShadowDOM ? this.shadowRoot : this;
   }
   
   setConfig(config) {
@@ -213,12 +234,12 @@ class TreeCard extends HTMLElement {
 
     // Validate configuration
     if (!this.config.url && !this.config.entity) {
-      this.shadowRoot.innerHTML = `<div class="error">Either URL or entity must be configured</div>`;
+      this.getRootElement().innerHTML = `<div class="error">Either URL or entity must be configured</div>`;
       return;
     }
 
     // Show loading state
-    this.shadowRoot.innerHTML = `
+    this.getRootElement().innerHTML = `
       <ha-card header="${this.config.title || 'Tree View'}">
         <div class="card-content">
           <div class="loading">Loading...</div>
@@ -242,7 +263,7 @@ class TreeCard extends HTMLElement {
         if (this.config.attribute && responseData[this.config.attribute] !== undefined) {
           jsonData = responseData[this.config.attribute];
         } else if (this.config.attribute) {
-          this.shadowRoot.innerHTML = `<div class="error">Key '${this.config.attribute}' not found in response</div>`;
+          this.getRootElement().innerHTML = `<div class="error">Key '${this.config.attribute}' not found in response</div>`;
           return;
         } else {
           jsonData = responseData;
@@ -251,14 +272,14 @@ class TreeCard extends HTMLElement {
         // Entity mode
         const entity = this._hass.states[this.config.entity];
         if (!entity) {
-          this.shadowRoot.innerHTML = `<div class="error">Entity ${this.config.entity} not found</div>`;
+          this.getRootElement().innerHTML = `<div class="error">Entity ${this.config.entity} not found</div>`;
           return;
         }
 
         // Get data from entity attribute
         const attributeValue = entity.attributes[this.config.attribute];
         if (attributeValue === undefined) {
-          this.shadowRoot.innerHTML = `<div class="error">Attribute '${this.config.attribute}' not found in entity ${this.config.entity}</div>`;
+          this.getRootElement().innerHTML = `<div class="error">Attribute '${this.config.attribute}' not found in entity ${this.config.entity}</div>`;
           return;
         }
 
@@ -273,7 +294,7 @@ class TreeCard extends HTMLElement {
       // Create the tree structure
       const treeHtml = this.createTree(jsonData, 0);
       
-      this.shadowRoot.innerHTML = `
+      this.getRootElement().innerHTML = `
         <ha-card header="${this.config.title || 'Tree View'}">
           <div class="card-content">
             <div class="tree-container">
@@ -287,7 +308,7 @@ class TreeCard extends HTMLElement {
       this.addEventListeners();
       
     } catch (error) {
-      this.shadowRoot.innerHTML = `<div class="error">Failed to fetch data: ${error.message}</div>`;
+      this.getRootElement().innerHTML = `<div class="error">Failed to fetch data: ${error.message}</div>`;
     }
   }
 
@@ -360,12 +381,13 @@ class TreeCard extends HTMLElement {
   }
 
   addEventListeners() {
-    const toggles = this.shadowRoot.querySelectorAll('.tree-toggle');
+    const root = this.getRootElement();
+    const toggles = root.querySelectorAll('.tree-toggle');
     toggles.forEach(toggle => {
       toggle.addEventListener('click', (e) => {
         e.stopPropagation();
         const targetId = toggle.getAttribute('data-target');
-        const target = this.shadowRoot.querySelector(`#${targetId}`);
+        const target = root.querySelector(`#${targetId}`);
         const treeNode = toggle.closest('.tree-node');
         const itemPath = treeNode.getAttribute('data-path');
         
