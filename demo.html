@@ -52,18 +52,6 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-        .error {
-            color: #d32f2f;
-            background-color: #ffebee;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
@@ -79,6 +67,7 @@
                 <button class="demo-button" onclick="loadFromFile()">Load from input.json</button>
                 <button class="demo-button" onclick="loadFromAPI()">Load from REST API</button>
                 <button class="demo-button" onclick="toggleAutoRefresh()">Toggle Auto-Refresh (30s)</button>
+                <button class="demo-button" onclick="inspectShadowDOM()">Inspect Shadow DOM</button>
                 <button class="demo-button" onclick="clearCard()">Clear Card</button>
             </div>
             <div id="tree-card-container">
@@ -89,6 +78,7 @@
         <div class="demo-card">
             <h2>Features Demonstrated</h2>
             <ul>
+                <li><strong>Shadow DOM</strong>: Proper style encapsulation using Web Components standards</li>
                 <li><strong>REST API Integration</strong>: Load data from external APIs</li>
                 <li><strong>File Loading</strong>: Load data from local JSON files</li>
                 <li><strong>Auto-Refresh</strong>: Automatic data updates at configurable intervals</li>
@@ -166,6 +156,11 @@
             container.appendChild(treeCard);
             
             currentCard = treeCard;
+            
+            // Wait for the card to render, then add demo-specific styles
+            setTimeout(() => {
+                addDemoStyles();
+            }, 100);
         }
 
         function toggleAutoRefresh() {
@@ -188,6 +183,28 @@
             }
         }
 
+        function addDemoStyles() {
+            if (currentCard && currentCard.shadowRoot) {
+                // Add demo-specific styles to the shadow root
+                const demoStyle = document.createElement('style');
+                demoStyle.textContent = `
+                    .loading {
+                        text-align: center;
+                        padding: 20px;
+                        color: #666;
+                    }
+                    .error {
+                        color: #d32f2f;
+                        background-color: #ffebee;
+                        padding: 10px;
+                        border-radius: 4px;
+                        margin: 10px 0;
+                    }
+                `;
+                currentCard.shadowRoot.appendChild(demoStyle);
+            }
+        }
+
         function clearCard() {
             const container = document.getElementById('tree-card-container');
             container.innerHTML = '<div class="loading">Click "Load from input.json" to see the tree card in action</div>';
@@ -199,9 +216,28 @@
             container.innerHTML = `<div class="error">${message}</div>`;
         }
 
+        // Function to demonstrate shadow DOM access
+        function inspectShadowDOM() {
+            if (currentCard && currentCard.shadowRoot) {
+                const treeNodes = currentCard.shadowRoot.querySelectorAll('.tree-node');
+                console.log(`Found ${treeNodes.length} tree nodes in shadow DOM`);
+                
+                const expandedItems = currentCard.shadowRoot.querySelectorAll('.tree-children[style*="block"]');
+                console.log(`Found ${expandedItems.length} expanded items`);
+                
+                return {
+                    totalNodes: treeNodes.length,
+                    expandedItems: expandedItems.length,
+                    shadowRoot: currentCard.shadowRoot
+                };
+            }
+            return null;
+        }
+
         // Initialize demo
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Tree Card Demo loaded. Click "Load from input.json" to start.');
+            console.log('Use inspectShadowDOM() in console to inspect the shadow DOM');
         });
     </script>
 </body>
