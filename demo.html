@@ -67,6 +67,7 @@
                 <button class="demo-button" onclick="loadFromFile()">Load from input.json</button>
                 <button class="demo-button" onclick="loadFromAPI()">Load from REST API</button>
                 <button class="demo-button" onclick="toggleAutoRefresh()">Toggle Auto-Refresh (30s)</button>
+                <button class="demo-button" onclick="toggleIcons()">Toggle Icons</button>
                 <button class="demo-button" onclick="inspectShadowDOM()">Inspect Shadow DOM</button>
                 <button class="demo-button" onclick="clearCard()">Clear Card</button>
             </div>
@@ -84,7 +85,8 @@
                 <li><strong>Auto-Refresh</strong>: Automatic data updates at configurable intervals</li>
                 <li><strong>State Preservation</strong>: Expanded elements remain expanded during refreshes</li>
                 <li><strong>Interactive Tree</strong>: Click ▶ arrows to expand/collapse branches</li>
-                <li><strong>Status Badges</strong>: Color-coded status indicators (CREATED, RUNNING, FAILED, etc.)</li>
+                <li><strong>Status Indicators</strong>: Color-coded text badges or Material Design icons</li>
+                <li><strong>Custom Icon Mapping</strong>: Define custom icons for specific status values</li>
                 <li><strong>Responsive Design</strong>: Works on all devices</li>
                 <li><strong>Dark Theme Support</strong>: Automatic adaptation to system theme</li>
             </ul>
@@ -95,6 +97,7 @@
     <script>
         let currentCard = null;
         let autoRefreshEnabled = false;
+        let iconsEnabled = false;
 
         // Mock Home Assistant object for demo
         const mockHass = {
@@ -121,7 +124,8 @@
                     entity: 'input_text.demo_data',
                     attribute: 'Response',
                     title: 'Demo Data from input.json',
-                    interval: autoRefreshEnabled ? 30 : 0
+                    interval: autoRefreshEnabled ? 30 : 0,
+                    useIcons: iconsEnabled
                 });
             } catch (error) {
                 showError(`Failed to load input.json: ${error.message}`);
@@ -135,7 +139,8 @@
                     url: 'http://192.168.248.2:1888/v2/api/sequence/json',
                     attribute: 'Response', // Use the entire response
                     title: 'Demo Data from REST API',
-                    interval: autoRefreshEnabled ? 30 : 0
+                    interval: autoRefreshEnabled ? 30 : 0,
+                    useIcons: iconsEnabled
                 });
             } catch (error) {
                 showError(`Failed to load from API: ${error.message}`);
@@ -179,6 +184,26 @@
             if (currentCard) {
                 const config = currentCard.config;
                 config.interval = autoRefreshEnabled ? 30 : 0;
+                currentCard.setConfig(config);
+            }
+        }
+
+        function toggleIcons() {
+            iconsEnabled = !iconsEnabled;
+            const button = event.target;
+            
+            if (iconsEnabled) {
+                button.textContent = 'Disable Icons';
+                button.style.backgroundColor = '#d32f2f';
+            } else {
+                button.textContent = 'Toggle Icons';
+                button.style.backgroundColor = '#1976d2';
+            }
+            
+            // Update current card if it exists
+            if (currentCard) {
+                const config = currentCard.config;
+                config.useIcons = iconsEnabled;
                 currentCard.setConfig(config);
             }
         }

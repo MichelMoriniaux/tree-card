@@ -10,9 +10,12 @@ A custom Lovelace card that displays JSON data as an interactive, indented tree 
 - **Auto-Refresh**: Configurable intervals for live data updates
 - **Hierarchical Display**: Shows nested JSON objects as an expandable tree
 - **Interactive**: Click to expand/collapse branches
-- **Status Indicators**: Color-coded status badges for different states
+- **Status Indicators**: Color-coded text badges or Material Design icons
+- **Custom Icon Mapping**: Define custom icons for specific status values
+- **State Preservation**: Expanded elements remain expanded during refreshes
 - **Responsive Design**: Works on desktop and mobile devices
 - **Dark Theme Support**: Automatically adapts to Home Assistant's theme
+- **Shadow DOM**: Proper style encapsulation using Web Components standards
 - **Customizable**: Easy to modify styling and behavior
 
 ## Installation
@@ -55,6 +58,30 @@ attribute: "Response"
 title: "Entity Data"
 ```
 
+### Icon Configuration
+
+```yaml
+type: custom:tree-card
+entity: input_text.json_data
+attribute: "Response"
+useIcons: true
+title: "Tree with Icons"
+```
+
+### Custom Icon Mapping
+
+```yaml
+type: custom:tree-card
+entity: input_text.json_data
+attribute: "Response"
+useIcons: true
+iconMapping:
+  "CREATED": "mdi:plus-circle"
+  "RUNNING": "mdi:loading"
+  "FAILED": "mdi:alert-octagon"
+title: "Custom Icons"
+```
+
 ### Advanced Configuration
 
 ```yaml
@@ -80,6 +107,8 @@ card_mod:
 | `attribute` | string | "Response" | Top-level JSON key (API mode) or entity attribute name (entity mode) |
 | `title` | string | "Tree View" | Card title displayed in header |
 | `interval` | number | 0 | Auto-refresh interval in seconds (0 = disabled) |
+| `useIcons` | boolean | false | Use Material Design icons instead of text status badges |
+| `iconMapping` | object | {} | Custom icon mapping for specific status values |
 
 ## Data Format
 
@@ -109,15 +138,48 @@ Example JSON structure:
 }
 ```
 
-## Status Colors
+## Status Indicators
 
-The card supports different status indicators with color coding:
+The card supports two types of status indicators:
 
+### Text Badges (Default)
+Color-coded text badges with background colors:
 - **CREATED**: Green background
 - **DISABLED**: Orange background  
 - **RUNNING**: Blue background
 - **COMPLETED**: Green background
 - **FAILED**: Red background
+
+### Material Design Icons
+When `useIcons: true` is set, the card displays Material Design icons instead of text badges:
+
+| Status | Default Icon | Color |
+|--------|--------------|-------|
+| CREATED | `mdi:check-circle` | Green |
+| RUNNING | `mdi:play-circle` | Blue |
+| COMPLETED | `mdi:check-circle-outline` | Green |
+| FAILED | `mdi:close-circle` | Red |
+| DISABLED | `mdi:pause-circle` | Orange |
+| PENDING | `mdi:clock-outline` | Orange |
+| ERROR | `mdi:alert-circle` | Red |
+| WARNING | `mdi:alert` | Orange |
+| INFO | `mdi:information` | Blue |
+| SUCCESS | `mdi:check` | Green |
+| ACTIVE | `mdi:play` | Green |
+| INACTIVE | `mdi:pause` | Gray |
+| ONLINE | `mdi:circle` | Green |
+| OFFLINE | `mdi:circle-outline` | Gray |
+
+### Custom Icon Mapping
+You can override any default icon by providing a custom mapping:
+
+```yaml
+iconMapping:
+  "CREATED": "mdi:plus-circle"
+  "RUNNING": "mdi:loading"
+  "FAILED": "mdi:alert-octagon"
+  "CUSTOM_STATUS": "mdi:star"
+```
 
 ## Data Sources
 
@@ -214,13 +276,28 @@ interval: 300
 title: "Weather Forecast"
 ```
 
-### Entity with Auto-Refresh (1 minute)
+### Entity with Auto-Refresh and Icons (1 minute)
 ```yaml
 type: custom:tree-card
 entity: sensor.system_status
 attribute: "data"
 interval: 60
+useIcons: true
 title: "System Status"
+```
+
+### REST API with Custom Icons
+```yaml
+type: custom:tree-card
+url: "https://api.example.com/status"
+attribute: "components"
+useIcons: true
+iconMapping:
+  "HEALTHY": "mdi:heart"
+  "WARNING": "mdi:alert-circle"
+  "CRITICAL": "mdi:alert-octagon"
+interval: 30
+title: "Service Health"
 ```
 
 ### No Auto-Refresh (Static Data)
@@ -239,9 +316,11 @@ The card includes all necessary CSS styles integrated directly into the JavaScri
 
 - **Tree Structure Styling**: Proper indentation and visual hierarchy
 - **Interactive Elements**: Hover effects and smooth transitions
-- **Status Badges**: Color-coded status indicators (CREATED, RUNNING, FAILED, etc.)
+- **Status Indicators**: Color-coded text badges and Material Design icons
+- **Icon Support**: Proper sizing and coloring for status icons
 - **Dark Theme Support**: Automatic adaptation to Home Assistant's dark theme
 - **Responsive Design**: Mobile-friendly layout adjustments
+- **Shadow DOM**: Proper style encapsulation using Web Components standards
 
 ### Custom Styling
 
@@ -250,6 +329,7 @@ You can override the default styles by adding custom CSS to your Lovelace config
 ```yaml
 type: custom:tree-card
 url: "https://api.example.com/static-data"
+useIcons: true
 card_mod:
   style: |
     .tree-name {
@@ -263,15 +343,40 @@ card_mod:
       background-color: #your-custom-color;
       color: #your-text-color;
     }
+    .tree-status-icon.status-created {
+      color: #your-custom-icon-color;
+    }
+```
+
+### Icon Customization
+
+You can customize icon colors and sizes:
+
+```yaml
+type: custom:tree-card
+entity: input_text.demo_data
+useIcons: true
+card_mod:
+  style: |
+    .tree-status-icon {
+      width: 20px;
+      height: 20px;
+    }
+    .tree-status-icon.status-running {
+      color: #ff6b35;
+    }
 ```
 
 ### Behavior
 
 The card automatically:
 - Expands branches with children
-- Shows status badges when available
+- Shows status indicators (text badges or icons) when available
+- Preserves expanded state during data refreshes
 - Handles click events for expand/collapse
 - Adapts to different screen sizes
+- Switches between light and dark themes
+- Uses Material Design icons when configured
 
 ## Troubleshooting
 
@@ -302,6 +407,13 @@ The card automatically:
 1. Clear browser cache
 2. Check for CSS conflicts with other cards
 3. Verify that styles are being injected (check browser developer tools)
+
+### Icon Issues
+
+1. **Icons not displaying**: Ensure `useIcons: true` is set in configuration
+2. **Custom icons not working**: Verify icon names are valid Material Design icons (e.g., `mdi:check-circle`)
+3. **Icon colors not applying**: Check if custom CSS is overriding icon colors
+4. **Icons too small/large**: Use custom CSS to adjust `.tree-status-icon` width and height
 
 ## Development
 

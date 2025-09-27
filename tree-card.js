@@ -83,6 +83,14 @@ class TreeCard extends HTMLElement {
         margin-left: 8px;
       }
 
+      .tree-status-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-left: 8px;
+        vertical-align: middle;
+      }
+
       .status-created {
         background-color: #e8f5e8;
         color: #2e7d32;
@@ -106,6 +114,63 @@ class TreeCard extends HTMLElement {
       .status-failed {
         background-color: #ffebee;
         color: #d32f2f;
+      }
+
+      /* Icon status colors */
+      .tree-status-icon.status-created {
+        color: #2e7d32;
+      }
+
+      .tree-status-icon.status-disabled {
+        color: #f57c00;
+      }
+
+      .tree-status-icon.status-running {
+        color: #1976d2;
+      }
+
+      .tree-status-icon.status-completed {
+        color: #388e3c;
+      }
+
+      .tree-status-icon.status-failed {
+        color: #d32f2f;
+      }
+
+      .tree-status-icon.status-pending {
+        color: #ff9800;
+      }
+
+      .tree-status-icon.status-error {
+        color: #d32f2f;
+      }
+
+      .tree-status-icon.status-warning {
+        color: #f57c00;
+      }
+
+      .tree-status-icon.status-info {
+        color: #1976d2;
+      }
+
+      .tree-status-icon.status-success {
+        color: #388e3c;
+      }
+
+      .tree-status-icon.status-active {
+        color: #2e7d32;
+      }
+
+      .tree-status-icon.status-inactive {
+        color: #757575;
+      }
+
+      .tree-status-icon.status-online {
+        color: #2e7d32;
+      }
+
+      .tree-status-icon.status-offline {
+        color: #757575;
       }
 
       .tree-children {
@@ -164,6 +229,63 @@ class TreeCard extends HTMLElement {
           background-color: #b71c1c;
           color: #ef9a9a;
         }
+
+        /* Icon status colors for dark theme */
+        .tree-status-icon.status-created {
+          color: #a5d6a7;
+        }
+
+        .tree-status-icon.status-disabled {
+          color: #ffcc02;
+        }
+
+        .tree-status-icon.status-running {
+          color: #90caf9;
+        }
+
+        .tree-status-icon.status-completed {
+          color: #a5d6a7;
+        }
+
+        .tree-status-icon.status-failed {
+          color: #ef9a9a;
+        }
+
+        .tree-status-icon.status-pending {
+          color: #ffb74d;
+        }
+
+        .tree-status-icon.status-error {
+          color: #ef9a9a;
+        }
+
+        .tree-status-icon.status-warning {
+          color: #ffcc02;
+        }
+
+        .tree-status-icon.status-info {
+          color: #90caf9;
+        }
+
+        .tree-status-icon.status-success {
+          color: #a5d6a7;
+        }
+
+        .tree-status-icon.status-active {
+          color: #a5d6a7;
+        }
+
+        .tree-status-icon.status-inactive {
+          color: #bdbdbd;
+        }
+
+        .tree-status-icon.status-online {
+          color: #a5d6a7;
+        }
+
+        .tree-status-icon.status-offline {
+          color: #bdbdbd;
+        }
       }
 
       /* Responsive design */
@@ -200,6 +322,35 @@ class TreeCard extends HTMLElement {
   getRootElement() {
     return this.useShadowDOM ? this.shadowRoot : this;
   }
+
+  getStatusIcon(status) {
+    if (!this.config.useIcons || !status) return null;
+    
+    // Check for custom icon mapping first
+    if (this.config.iconMapping && this.config.iconMapping[status]) {
+      return this.config.iconMapping[status];
+    }
+    
+    // Default icon mapping
+    const defaultIcons = {
+      'CREATED': 'mdi:check-circle',
+      'RUNNING': 'mdi:play-circle',
+      'COMPLETED': 'mdi:check-circle-outline',
+      'FAILED': 'mdi:close-circle',
+      'DISABLED': 'mdi:pause-circle',
+      'PENDING': 'mdi:clock-outline',
+      'ERROR': 'mdi:alert-circle',
+      'WARNING': 'mdi:alert',
+      'INFO': 'mdi:information',
+      'SUCCESS': 'mdi:check',
+      'ACTIVE': 'mdi:play',
+      'INACTIVE': 'mdi:pause',
+      'ONLINE': 'mdi:circle',
+      'OFFLINE': 'mdi:circle-outline'
+    };
+    
+    return defaultIcons[status.toUpperCase()] || 'mdi:circle';
+  }
   
   setConfig(config) {
     this.config = {
@@ -207,6 +358,8 @@ class TreeCard extends HTMLElement {
       entity: '', // Home Assistant entity ID
       attribute: 'Response', // Top-level key in JSON response or entity attribute name
       interval: 0, // Refresh interval in seconds (0 = no auto-refresh)
+      useIcons: false, // Use icons instead of text status indicators
+      iconMapping: {}, // Custom icon mapping for status values
       ...config
     };
     this.expandedItems = new Set(); // Track expanded items
@@ -349,6 +502,17 @@ class TreeCard extends HTMLElement {
         // Check if this item should be expanded
         const isExpanded = this.expandedItems.has(itemPath);
         
+        // Generate status display (icon or text)
+        let statusDisplay = '';
+        if (data.Status) {
+          const icon = this.getStatusIcon(data.Status);
+          if (icon) {
+            statusDisplay = `<ha-icon icon="${icon}" class="tree-status-icon status-${data.Status.toLowerCase()}"></ha-icon>`;
+          } else {
+            statusDisplay = `<span class="tree-status status-${data.Status.toLowerCase()}">${data.Status}</span>`;
+          }
+        }
+
         html += `
           <div class="tree-item" style="margin-left: ${level * 20}px;">
             <div class="tree-node" data-item-id="${itemId}" data-path="${itemPath}">
@@ -357,7 +521,7 @@ class TreeCard extends HTMLElement {
                 '<span class="tree-spacer"></span>'
               }
               <span class="tree-name">${data.Name}</span>
-              ${data.Status ? `<span class="tree-status status-${data.Status.toLowerCase()}">${data.Status}</span>` : ''}
+              ${statusDisplay}
             </div>
             ${hasChildren ? `
               <div class="tree-children" id="${itemId}" style="display: ${isExpanded ? 'block' : 'none'};">
