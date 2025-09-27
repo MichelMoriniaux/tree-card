@@ -1,4 +1,4 @@
-class TreeCard extends HTMLElement {
+class TreeCard extends HTMLElement {  
   setConfig(config) {
     this.config = {
       url: '', // REST endpoint URL
@@ -11,8 +11,10 @@ class TreeCard extends HTMLElement {
   }
 
   set hass(hass) {
-    this.hass = hass;
-    this.render();
+    if (this._hass !== hass) {
+      this._hass = hass;
+      this.render();
+    }
   }
 
   connectedCallback() {
@@ -24,7 +26,7 @@ class TreeCard extends HTMLElement {
   }
 
   async render() {
-    if (!this.config || !this.hass) return;
+    if (!this.config || !this._hass) return;
 
     // Validate configuration
     if (!this.config.url) {
