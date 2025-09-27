@@ -1,6 +1,9 @@
 class TreeCard extends HTMLElement {
   setConfig(config) {
-    this.config = config;
+    this.config = {
+      attribute: 'Response', // Default attribute name
+      ...config
+    };
     this.render();
   }
 
@@ -21,9 +24,14 @@ class TreeCard extends HTMLElement {
 
     let jsonData;
     try {
-      jsonData = JSON.parse(entity.attributes.Response);
+      const attributeValue = entity.attributes[this.config.attribute];
+      if (attributeValue === undefined) {
+        this.innerHTML = `<div class="error">Attribute '${this.config.attribute}' not found in entity ${this.config.entity}</div>`;
+        return;
+      }
+      jsonData = JSON.parse(attributeValue);
     } catch (e) {
-      this.innerHTML = `<div class="error">Invalid JSON in entity ${this.config.entity} Response attribute</div>`;
+      this.innerHTML = `<div class="error">Invalid JSON in entity ${this.config.entity} ${this.config.attribute} attribute</div>`;
       return;
     }
 
