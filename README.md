@@ -4,7 +4,9 @@ A custom Lovelace card that displays JSON data as an interactive, indented tree 
 
 ## Features
 
+- **Dual Data Sources**: Fetch data from REST APIs or read from Home Assistant entities
 - **REST API Integration**: Fetch data directly from external APIs
+- **Entity Support**: Read JSON data from Home Assistant entity attributes
 - **Auto-Refresh**: Configurable intervals for live data updates
 - **Hierarchical Display**: Shows nested JSON objects as an expandable tree
 - **Interactive**: Click to expand/collapse branches
@@ -47,6 +49,15 @@ title: "Live Data"
 interval: 30
 ```
 
+### Entity Configuration
+
+```yaml
+type: custom:tree-card
+entity: input_text.json_data
+attribute: "Response"
+title: "Entity Data"
+```
+
 ### Advanced Configuration
 
 ```yaml
@@ -68,7 +79,8 @@ card_mod:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `url` | string | - | REST API endpoint URL (required for API mode) |
-| `attribute` | string | "Response" | Top-level JSON key to extract from response |
+| `entity` | string | - | Home Assistant entity ID (required for entity mode) |
+| `attribute` | string | "Response" | Top-level JSON key (API mode) or entity attribute name (entity mode) |
 | `title` | string | "Tree View" | Card title displayed in header |
 | `interval` | number | 0 | Auto-refresh interval in seconds (0 = disabled) |
 
@@ -136,7 +148,7 @@ The card can fetch data directly from REST APIs. Simply provide the URL and the 
 
 ### Home Assistant Entities
 
-For entity-based data sources, you can use:
+The card can read JSON data from Home Assistant entity attributes. The `attribute` parameter specifies which attribute contains the JSON data.
 
 #### input_text
 Add to your `configuration.yaml`:
@@ -154,6 +166,35 @@ input_text:
           }
         ]
       }
+```
+
+Then use the card:
+```yaml
+type: custom:tree-card
+entity: input_text.json_data
+attribute: "Response"
+title: "My Data"
+```
+
+#### REST Sensor
+Add to your `configuration.yaml`:
+
+```yaml
+rest:
+  - resource: "http://your-api-endpoint.com/data"
+    sensor:
+      - name: "API Data"
+        value_template: "{{ value_json }}"
+        json_attributes:
+          - "*"
+```
+
+Then use the card:
+```yaml
+type: custom:tree-card
+entity: sensor.api_data
+attribute: "Response"
+title: "API Data"
 ```
 
 ## Auto-Refresh Examples
@@ -174,6 +215,15 @@ url: "https://api.weather.com/forecast"
 attribute: "forecast"
 interval: 300
 title: "Weather Forecast"
+```
+
+### Entity with Auto-Refresh (1 minute)
+```yaml
+type: custom:tree-card
+entity: sensor.system_status
+attribute: "data"
+interval: 60
+title: "System Status"
 ```
 
 ### No Auto-Refresh (Static Data)

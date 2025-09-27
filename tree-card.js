@@ -2,7 +2,8 @@ class TreeCard extends HTMLElement {
   setConfig(config) {
     this.config = {
       url: '', // REST endpoint URL
-      attribute: 'Response', // Top-level key in JSON response
+      entity: '', // Home Assistant entity ID
+      attribute: 'Response', // Top-level key in JSON response or entity attribute name
       interval: 0, // Refresh interval in seconds (0 = no auto-refresh)
       ...config
     };
@@ -29,8 +30,8 @@ class TreeCard extends HTMLElement {
     if (!this.config || !this._hass) return;
 
     // Validate configuration
-    if (!this.config.url) {
-      this.innerHTML = `<div class="error">URL not configured</div>`;
+    if (!this.config.url && !this.config.entity) {
+      this.innerHTML = `<div class="error">Either URL or entity must be configured</div>`;
       return;
     }
 
@@ -44,23 +45,47 @@ class TreeCard extends HTMLElement {
     `;
 
     try {
-      // Make REST call
-      const response = await fetch(this.config.url);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const responseData = await response.json();
-      
-      // Extract data using the configured attribute as top-level key
       let jsonData;
-      if (this.config.attribute && responseData[this.config.attribute] !== undefined) {
-        jsonData = responseData[this.config.attribute];
-      } else if (this.config.attribute) {
-        this.innerHTML = `<div class="error">Key '${this.config.attribute}' not found in response</div>`;
-        return;
+
+      if (this.config.url) {
+        // REST API mode
+        const response = await fetch(this.config.url);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const responseData = await response.json();
+        
+        // Extract data using the configured attribute as top-level key
+        if (this.config.attribute && responseData[this.config.attribute] !== undefined) {
+          jsonData = responseData[this.config.attribute];
+        } else if (this.config.attribute) {
+          this.innerHTML = `<div class="error">Key '${this.config.attribute}' not found in response</div>`;
+          return;
+        } else {
+          jsonData = responseData;
+        }
       } else {
-        jsonData = responseData;
+        // Entity mode
+        const entity = this._hass.states[this.config.entity];
+        if (!entity) {
+          this.innerHTML = `<div class="error">Entity ${this.config.entity} not found</div>`;
+          return;
+        }
+
+        // Get data from entity attribute
+        const attributeValue = entity.attributes[this.config.attribute];
+        if (attributeValue === undefined) {
+          this.innerHTML = `<div class="error">Attribute '${this.config.attribute}' not found in entity ${this.config.entity}</div>`;
+          return;
+        }
+
+        // Parse JSON from attribute
+        if (typeof attributeValue === 'string') {
+          jsonData = JSON.parse(attributeValue);
+        } else {
+          jsonData = attributeValue;
+        }
       }
 
       // Create the tree structure
