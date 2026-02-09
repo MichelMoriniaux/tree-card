@@ -333,23 +333,15 @@ class TreeCard extends HTMLElement {
     
     // Default icon mapping
     const defaultIcons = {
-      'CREATED': 'mdi:check-circle',
+      'CREATED': 'mdi:circle-outline',
       'RUNNING': 'mdi:play-circle',
-      'COMPLETED': 'mdi:check-circle-outline',
+      'FINISHED': 'mdi:check-circle-outline',
+      'SKIPPED': 'mdi:skip-next-circle',
       'FAILED': 'mdi:close-circle',
-      'DISABLED': 'mdi:pause-circle',
-      'PENDING': 'mdi:clock-outline',
-      'ERROR': 'mdi:alert-circle',
-      'WARNING': 'mdi:alert',
-      'INFO': 'mdi:information',
-      'SUCCESS': 'mdi:check',
-      'ACTIVE': 'mdi:play',
-      'INACTIVE': 'mdi:pause',
-      'ONLINE': 'mdi:circle',
-      'OFFLINE': 'mdi:circle-outline'
+      'DISABLED': 'mdi:pause-circle'
     };
     
-    return defaultIcons[status.toUpperCase()] || 'mdi:circle';
+    return defaultIcons[status.toUpperCase()] || 'mdi:circle-outline';
   }
   
   setConfig(config) {
@@ -485,7 +477,7 @@ class TreeCard extends HTMLElement {
 
   createTree(data, level, path = '') {
     let html = '';
-    const indent = '  '.repeat(level);
+    const indent = '  '; // .repeat(level);
     
     if (Array.isArray(data)) {
       data.forEach((item, index) => {
@@ -512,9 +504,9 @@ class TreeCard extends HTMLElement {
             statusDisplay = `<span class="tree-status status-${data.Status.toLowerCase()}">${data.Status}</span>`;
           }
         }
-
+        // ${level * 20}px
         html += `
-          <div class="tree-item" style="margin-left: ${level * 20}px;">
+          <div class="tree-item" style="margin-left: 20px;">
             <div class="tree-node" data-item-id="${itemId}" data-path="${itemPath}">
               ${hasChildren ? 
                 `<span class="tree-toggle" data-target="${itemId}">${isExpanded ? '▼' : '▶'}</span>` : 
@@ -585,11 +577,11 @@ class TreeCard extends HTMLElement {
 customElements.define('tree-card', TreeCard);
 
 // Register the card with Home Assistant
-/*
+
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: 'tree-card',
   name: 'Tree Card',
   description: 'Display JSON data as an indented tree structure',
 });
-*/
+

@@ -618,7 +618,7 @@
                                                     "Type": "LIGHT",
                                                     "Filter": "L",
                                                     "ExposureTime": 60,
-                                                    "Status": "CREATED",
+                                                    "Status": "RUNNING",
                                                     "Iterations": 109
                                                 },
                                                 {
