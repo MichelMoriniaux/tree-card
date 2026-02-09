@@ -1,5 +1,5 @@
 {
-	"name": "Tree Card renders a json object as a tree",
+	"name": "NINA Tree Card renders a Sequence as a tree",
 	"content_in_root": false,
 	"homeassistant": "2025.8.0",
 	"filename": "tree-card.js",
