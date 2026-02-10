@@ -540,14 +540,23 @@ class TreeCard extends HTMLElement {
   }
 
   createConditionsTriggersItems(data, level, itemPath) {
+    const hasConditions = data.Conditions && data.Conditions.length > 0;
+    const hasTriggers = data.Triggers && data.Triggers.length > 0;
+    const hasItems = data.Items && data.Items.length > 0;
+    const showItemsHeader = hasConditions || hasTriggers;
+
     const sections = [
       { key: 'Conditions', label: 'Conditions', array: data.Conditions },
       { key: 'Triggers', label: 'Triggers', array: data.Triggers },
-      { key: 'Items', label: 'Instructions', array: data.Items }
+      { key: 'Items', label: 'Instructions', array: data.Items, onlyIfOtherSections: true }
     ];
     let html = '';
-    for (const { key, label, array } of sections) {
+    for (const { key, label, array, onlyIfOtherSections } of sections) {
       if (!array || array.length === 0) continue;
+      if (onlyIfOtherSections && !showItemsHeader) {
+        html += this.createTree(array, level + 1, `${itemPath}.${key}`);
+        continue;
+      }
       const sectionPath = `${itemPath}.${key}`;
       const sectionId = `item-${sectionPath.replace(/[^a-zA-Z0-9]/g, '_')}`;
       const isExpanded = this.expandedItems.has(sectionPath);
