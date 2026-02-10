@@ -487,7 +487,10 @@ class TreeCard extends HTMLElement {
     } else if (typeof data === 'object' && data !== null) {
       // Check if this object has a Name property
       if (data.Name) {
-        const hasChildren = data.Items && data.Items.length > 0;
+        const hasConditions = data.Conditions && data.Conditions.length > 0;
+        const hasTriggers = data.Triggers && data.Triggers.length > 0;
+        const hasItems = data.Items && data.Items.length > 0;
+        const hasChildren = hasConditions || hasTriggers || hasItems;
         const itemPath = path ? `${path}.${data.Name}` : data.Name;
         const itemId = `item-${itemPath.replace(/[^a-zA-Z0-9]/g, '_')}`;
         
@@ -517,7 +520,7 @@ class TreeCard extends HTMLElement {
             </div>
             ${hasChildren ? `
               <div class="tree-children" id="${itemId}" style="display: ${isExpanded ? 'block' : 'none'};">
-                ${this.createTree(data.Items, level + 1, itemPath)}
+                ${this.createConditionsTriggersItems(data, level, itemPath)}
               </div>
             ` : ''}
           </div>
@@ -526,13 +529,40 @@ class TreeCard extends HTMLElement {
       
       // Process other properties that might contain nested objects
       Object.keys(data).forEach(key => {
-        if (key !== 'Name' && key !== 'Items' && typeof data[key] === 'object') {
+        if (key !== 'Name' && key !== 'Items' && key !== 'Conditions' && key !== 'Triggers' && typeof data[key] === 'object') {
           const itemPath = path ? `${path}.${key}` : key;
           html += this.createTree(data[key], level, itemPath);
         }
       });
     }
     
+    return html;
+  }
+
+  createConditionsTriggersItems(data, level, itemPath) {
+    const sections = [
+      { key: 'Conditions', label: 'Conditions', array: data.Conditions },
+      { key: 'Triggers', label: 'Triggers', array: data.Triggers },
+      { key: 'Items', label: 'Instructions', array: data.Items }
+    ];
+    let html = '';
+    for (const { key, label, array } of sections) {
+      if (!array || array.length === 0) continue;
+      const sectionPath = `${itemPath}.${key}`;
+      const sectionId = `item-${sectionPath.replace(/[^a-zA-Z0-9]/g, '_')}`;
+      const isExpanded = this.expandedItems.has(sectionPath);
+      html += `
+        <div class="tree-item" style="margin-left: 20px;">
+          <div class="tree-node" data-item-id="${sectionId}" data-path="${sectionPath}">
+            <span class="tree-toggle" data-target="${sectionId}">${isExpanded ? '▼' : '▶'}</span>
+            <span class="tree-name">${label} (${array.length})</span>
+          </div>
+          <div class="tree-children" id="${sectionId}" style="display: ${isExpanded ? 'block' : 'none'};">
+            ${this.createTree(array, level + 1, sectionPath)}
+          </div>
+        </div>
+      `;
+    }
     return html;
   }
 
