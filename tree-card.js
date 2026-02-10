@@ -537,12 +537,12 @@ class TreeCard extends HTMLElement {
       }
       
       // Process other properties that might contain nested objects
-      Object.keys(data).forEach(key => {
+      /*Object.keys(data).forEach(key => {
         if (key !== 'Name' && key !== 'Items' && key !== 'Conditions' && key !== 'Triggers' && typeof data[key] === 'object') {
           const itemPath = path ? `${path}.${key}` : key;
           html += this.createTree(data[key], level, itemPath);
         }
-      });
+      });*/
     }
     
     return html;
