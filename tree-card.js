@@ -484,6 +484,19 @@ class TreeCard extends HTMLElement {
       .trim();
   }
 
+  getIterationLabel(data) {
+    if (!data || typeof data !== 'object') return '';
+    const hasCompleted = 'CompletedIterations' in data;
+    const nameHasExposure = data.Name && String(data.Name).toLowerCase().includes('exposure');
+    const total = nameHasExposure && data.ExposureCount != null
+      ? data.ExposureCount
+      : data.Iterations;
+    if (!hasCompleted && !(nameHasExposure && data.ExposureCount != null)) return '';
+    if (total == null) return '';
+    const completed = data.CompletedIterations != null ? data.CompletedIterations : 0;
+    return ` (${completed} / ${total})`;
+  }
+
   createTree(data, level, path = '') {
     let html = '';
     const indent = '  '; // .repeat(level);
@@ -524,7 +537,7 @@ class TreeCard extends HTMLElement {
                 `<span class="tree-toggle" data-target="${itemId}">${isExpanded ? '▼' : '▶'}</span>` : 
                 '<span class="tree-spacer"></span>'
               }
-              <span class="tree-name">${this.stripNameSuffix(data.Name)}</span>
+              <span class="tree-name">${this.stripNameSuffix(data.Name)}${this.getIterationLabel(data)}</span>
               ${statusDisplay}
             </div>
             ${hasChildren ? `
