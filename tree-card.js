@@ -475,6 +475,15 @@ class TreeCard extends HTMLElement {
     }
   }
 
+  stripNameSuffix(name) {
+    if (typeof name !== 'string') return name;
+    return name
+      .replace(/_Container$/i, '')
+      .replace(/_Trigger$/i, '')
+      .replace(/_Condition$/i, '')
+      .trim();
+  }
+
   createTree(data, level, path = '') {
     let html = '';
     const indent = '  '; // .repeat(level);
@@ -515,7 +524,7 @@ class TreeCard extends HTMLElement {
                 `<span class="tree-toggle" data-target="${itemId}">${isExpanded ? '▼' : '▶'}</span>` : 
                 '<span class="tree-spacer"></span>'
               }
-              <span class="tree-name">${data.Name}</span>
+              <span class="tree-name">${this.stripNameSuffix(data.Name)}</span>
               ${statusDisplay}
             </div>
             ${hasChildren ? `
